@@ -1,0 +1,44 @@
+<HTML>
+<head>
+<script src="http://codeorigin.jquery.com/jquery-2.0.3.min.js"></script>
+<script src="socrata/socrata.js"></script>
+</head>
+<body>
+
+<script>
+
+var views = { };
+socrata.views(null, function(data) {
+	views = data;
+	console.log('Views:', views);
+
+	var crimeView = views['Crime'];
+	var busStopsView = views['Bus Stops'];
+	var busStopsView2 = views['bus stops'];
+	var parksView = views['HRM Parks'];
+	var trailsView = views['Trails'];
+
+	var busStopsChildView = null;
+	busStopsView.childViewAt(0, null, function(data){
+		console.log('ChildView:',data);
+		busStopsChildView = data;
+
+		busStopsChildView.rows(null, function(data) { 
+			console.log('Rows:', data);
+		});
+
+	});
+
+});
+/*
+socrata.view('aztd-b9v3',null, function(data) { 
+	console.log(data); view = data; view.rows(undefined, function(data) { 
+		console.log(data); 
+	}); 
+});
+*/
+
+</script>
+
+</body>
+</HTML>
