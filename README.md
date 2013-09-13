@@ -19,3 +19,10 @@ sh setup.sh
 Open the following link: http://glavin001.github.io/apps4halifax/index.html 
 
 *Note: Open your Developer JavaScript Console and wait for all of the API calls to complete to see the Bus Stop database table rows.*
+
+### Running your own local server
+There is a simple script built already for that. Use the following bash command.
+```bash
+sh server.sh
+```
+Then you can see your server on your machine at http://localhost:8000
