@@ -14,3 +14,8 @@ In your bash terminal run the following commands.
 ```bash
 sh setup.sh
 ```
+
+### Example of custom Socrata JavaScript SDK
+Open the following link: http://glavin001.github.io/apps4halifax/index.html 
+
+*Note: Open your Developer JavaScript Console and wait for all of the API calls to complete to see the Bus Stop database table rows.*
