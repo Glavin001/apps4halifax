@@ -9,7 +9,7 @@ Description: Hfx.js library for integration with our RESTful API.
 	// For easy access and minification.
 	var self = hfx;
 
-	var apiUrl = 'http://140.184.132.237:5000/Halifax/';
+	var apiUrl = 'http://140.184.132.237:5000/api/Halifax/';
 
 	self.apiCall = function(options) {
 		return $.ajax({
@@ -34,6 +34,8 @@ Description: Hfx.js library for integration with our RESTful API.
 		});
 	};
 */
+
+
 	
 	self.geoNear = function(lat, lon, side, callback, options) {
 		return self.geoWithin(lat-side/2, lon-side/2, lat+side/2, lon+side/2, callback, options);
@@ -44,16 +46,11 @@ Description: Hfx.js library for integration with our RESTful API.
 		var query = options || { };
 		query['latitude'] = { $gte : minLat, $lte : maxLat } ;
 		query['longitude'] =  { $gte : minLon, $lte : maxLon } ;
-		/*
-		(
-				JSON.stringify({ 'latitude' : { $gte : minLat, $lte : maxLat } }), 
-				JSON.stringify({ 'longitude' : { $gte : minLon, $lte : maxLon } })
-				)
-		*/
+
 		return $.ajax({
 			type: "GET",
 			url: apiUrl,
-			data: {'where': JSON.stringify(query) },
+			data: { 'max_results': 100, 'where': JSON.stringify(query) },
 			success: function(data) {
 				return callback && callback(data);
 			}
