@@ -6,14 +6,15 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	<link rel="stylesheet" href="../dist/leaflet.css" />
-	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.css" />
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
 
-	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.css" />
 	<!--[if lte IE 8]><link rel="stylesheet" href="../dist/leaflet.ie.css" /><![endif]-->
 	<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
-	<script src="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
 	<script>
-
+		function openTrending(){
+			$( "#left-panel" ).panel( "open" );
+		}
 	</script>
 </head>
 <body>
@@ -24,17 +25,20 @@
 <div data-role="page">
 
 	<div data-role="content">
-		Dashboard You are in . Trending Locations
-		<p><a href="#" onclick="showMap()">WOO</a></p>		
 	</div><!-- /content -->
+
+ 	<div data-role="panel" data-display="overlay" id="left-panel" data-theme="b">
+        <p>live updates.</p>
+        <a href="#" data-rel="close" data-role="button" data-mini="true" data-inline="true" data-icon="delete" data-iconpos="right">Close</a>
+    </div><!-- /panel -->
 
 	<div data-role="header" data-id="foo1" data-position="fixed">
 		<div data-role="navbar">
 			<ul>
-				<li><a href="b.html">Your Location</a></li>
+				<li><a href="#left-panel" data-theme="d" data-shadow="false" data-iconshadow="false" class="ui-icon-nodisc">Your Location</a></li>
 				<li><a href="a.html">Trending</a></li>
 				<li><a href="b.html">Things Happening Nearby</a></li>
-				<li><a href="b.html">Challenges <img width=16 height=16 src="../dist/images/main/settings.png" style="margin-left:5px;position:fixed" /></a></li>
+				<li><a href="b.html">Challenges</a></li>
 			</ul>
 		</div><!-- /navbar -->
 	</div><!-- /footer -->
