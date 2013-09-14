@@ -15,6 +15,11 @@
 		function openTrending(){
 			$( "#left-panel" ).panel( "open" );
 		}
+		$(document).ready(function() {
+			$( ".comment_box" ).each(function (i) {
+				$(this).height($(this).parent().height()-$(this).next(".current_comment").height()-25);
+	      	});
+		});
 	</script>
 </head>
 <body>
@@ -28,17 +33,24 @@
 	</div><!-- /content -->
 
  	<div data-role="panel" data-display="overlay" id="left-panel" data-theme="b">
-        <p>live updates.</p>
-        <a href="#" data-rel="close" data-role="button" data-mini="true" data-inline="true" data-icon="delete" data-iconpos="right">Close</a>
+		<div class="comment_box" style="height:500px;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
+		Bobby: said
+		</div>
+		<div class="current_comment">
+        <textarea></textarea> 
+ 		<button>Comment</button>
+ 		<button data-theme="a">Snap Picture</button>
+ 		</div>
+<!--         <a href="#" data-rel="close" data-role="button" data-mini="true" data-inline="true" data-icon="delete" data-iconpos="right">Close</a> -->
     </div><!-- /panel -->
 
 	<div data-role="header" data-id="foo1" data-position="fixed">
 		<div data-role="navbar">
 			<ul>
-				<li><a href="#left-panel" data-theme="d" data-shadow="false" data-iconshadow="false" class="ui-icon-nodisc">Your Location</a></li>
+				<li><a  href="#left-panel" data-shadow="false" data-iconshadow="false" class="ui-icon-nodisc">Your Location</a></li>
 				<li><a href="a.html">Trending</a></li>
 				<li><a href="b.html">Things Happening Nearby</a></li>
-				<li><a href="b.html">Challenges</a></li>
+				<li><a href="b.html">Friends</a></li>
 			</ul>
 		</div><!-- /navbar -->
 	</div><!-- /footer -->
@@ -86,7 +98,7 @@
 		function onMapClick(e) {
 			popup
 				.setLatLng(e.latlng)
-				.setContent("WHatza going on here " + e.latlng.toString())
+				.setContent("Bob said: " + e.latlng.toString())
 				.openOn(map);
 		}
 
