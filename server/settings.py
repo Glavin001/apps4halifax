@@ -16,7 +16,6 @@ ITEM_METHODS = ['GET', 'PATCH', 'DELETE']
 CACHE_CONTROL = 'max-age=20'
 CACHE_EXPIRES = 20
 
-
 # The DOMAIN dict explains which resources will be available and how they will
 # be accessible to the API consumer.
 DOMAIN = {
@@ -24,14 +23,13 @@ DOMAIN = {
     'Halifax' : {
         
         'schema': {
-            'type':'string',
-            'longitude':'float',
-            'latitude':'float',
-            'meta':'dict',
-            'loc':'dict'
+            'type': { type: 'string', 'required': True },
+            'longitude': { type: 'float', 'required': True },
+            'latitude': { type: 'float', 'required': True },
+            'meta': { type: 'dict' },
+            'loc': { type: 'dict' }
         }
     }
-
 }
 
 # Let's just use the local mongod instance. Edit as needed.

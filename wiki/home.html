@@ -1,0 +1,147 @@
+<html>
+<head>
+
+<script src="http://codeorigin.jquery.com/jquery-2.0.3.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"></link>
+
+<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+
+<script src="hfx.js"></script>
+
+</head>
+<body>
+
+	<div class="container">
+
+<h1>test</h1>
+<p class="lead">this is a test</p>
+
+
+<h2>Retrieving Data <small>GET request</small></h2>
+<pre class="prettyprint">
+var whereQuery = {'type': { $nin: [ 'crime' ] }};
+$.ajax({
+	type:"GET",
+	url:"http://140.184.132.237:5000/Halifax/",
+	data: {'where':JSON.stringify(whereQuery)},
+	success: function(data) {
+		console.log(data);
+	}
+});
+</pre>
+
+<pre class="prettyprint">
+hfx.geoNear(44.6459460142, -63.5739672999, 0.00001, function(data) { console.log(data); }, {'type': { $ne : 'building_symbols' } });
+</pre>
+
+
+<div class="section" id="comparison-query-operators">
+<span id="query-selectors-comparison"></span><h1>Comparison Query Operators<a class="headerlink" href="#comparison-query-operators" title="Permalink to this headline"></a></h1>
+<table border="1" class="docutils">
+<colgroup>
+<col width="18%">
+<col width="82%">
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="../gt/#op._S_gt" title="$gt"><tt class="xref mongodb mongodb-operator docutils literal"><span class="pre">$gt</span></tt></a></td>
+<td>Matches values that are greater than the value specified in the query.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../gte/#op._S_gte" title="$gte"><tt class="xref mongodb mongodb-operator docutils literal"><span class="pre">$gte</span></tt></a></td>
+<td>Matches values that are equal to or greater than the value specified in the query.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../in/#op._S_in" title="$in"><tt class="xref mongodb mongodb-operator docutils literal"><span class="pre">$in</span></tt></a></td>
+<td>Matches any of the values that exist in an array specified in the query.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../lt/#op._S_lt" title="$lt"><tt class="xref mongodb mongodb-operator docutils literal"><span class="pre">$lt</span></tt></a></td>
+<td>Matches values that are less than the value specified in the query.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../lte/#op._S_lte" title="$lte"><tt class="xref mongodb mongodb-operator docutils literal"><span class="pre">$lte</span></tt></a></td>
+<td>Matches values that are less than or equal to the value specified in the query.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../ne/#op._S_ne" title="$ne"><tt class="xref mongodb mongodb-operator docutils literal"><span class="pre">$ne</span></tt></a></td>
+<td>Matches all values that are not equal to the value specified in the query.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../nin/#op._S_nin" title="$nin"><tt class="xref mongodb mongodb-operator docutils literal"><span class="pre">$nin</span></tt></a></td>
+<td>Matches values that <strong>do not</strong> exist in an array specified to the query.</td>
+</tr>
+</tbody>
+</table>
+<div class="toctree-wrapper hidden compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gt/">$gt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gte/">$gte</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../in/">$in</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lt/">$lt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lte/">$lte</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ne/">$ne</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nin/">$nin</a></li>
+</ul>
+</div>
+</div>
+
+
+<h3>Schema</h3>
+<pre class="prettyprint">
+{"_items": [
+0: Object
+_id: "52347aff4b9f4a54e533a015"
+_links: Object
+self: Object
+href: "140.184.132.237:5000/Halifax/52347aff4b9f4a54e533a015/"
+title: "Halifax"
+__proto__: Object
+__proto__: Object
+created: "Sat, 14 Sep 2013 15:04:31 GMT"
+etag: "4cd7b04290baca3dc3b2769b1208e9b4bbf860a6"
+latitude: 44.66218450461815
+loc: Object
+coordinates: Array[2]
+0: -63.48330248309176
+1: 44.66218450461815
+length: 2
+__proto__: Array[0]
+type: "Point"
+__proto__: Object
+longitude: -63.48330248309176
+meta: Object
+FCODE: "TRBSIN"
+GOTIME: "6471"
+LOCATION: "COLBY DR NS CRESTWOOD DR"
+LTAR: "Y"
+OBJECTID: "477"
+SACC: "DV"
+SDATE: "Jun 7, 2012 12:00:00 AM"
+SOURCE: "TRANSIT"
+_SocrataID: "6edr-s82t"
+altitude: 0
+altitudeMode: "clampToGround"
+heading: 0
+range: 0
+tilt: 0
+__proto__: Object
+type: "bus_stops"
+updated: "Sat, 14 Sep 2013 15:04:31 GMT"
+}
+],
+"_links": {
+	
+}
+}
+</pre>
+
+<pre class="prettyprint">
+{"_items":[
+{"loc":{"type":"Point","coordinates":[-63.48330248309176,44.66218450461815]},"updated":"Sat, 14 Sep 2013 15:04:31 GMT","created":"Sat, 14 Sep 2013 15:04:31 GMT","longitude":-63.48330248309176,"meta":{"SDATE":"Jun 7, 2012 12:00:00 AM","altitudeMode":"clampToGround","SACC":"DV","OBJECTID":"477","tilt":0,"altitude":0,"GOTIME":"6471","_SocrataID":"6edr-s82t","FCODE":"TRBSIN","SOURCE":"TRANSIT","range":0,"LOCATION":"COLBY DR NS CRESTWOOD DR","heading":0,"LTAR":"Y"},"_links":{"self":{"href":"140.184.132.237:5000/Halifax/52347aff4b9f4a54e533a015/","title":"Halifax"}},"etag":"4cd7b04290baca3dc3b2769b1208e9b4bbf860a6","latitude":44.66218450461815,"_id":"52347aff4b9f4a54e533a015","type":"bus_stops"},{"loc":{"type":"Point","coordinates":[-63.48137547047051,44.6606103762764]},"updated":"Sat, 14 Sep 2013 15:04:31 GMT","created":"Sat, 14 Sep 2013 15:04:31 GMT","longitude":-63.48137547047051,"meta":{"SDATE":"Jun 7, 2012 12:00:00 AM","altitudeMode":"clampToGround","SACC":"DV","OBJECTID":"479","tilt":0,"altitude":0,"GOTIME":"6473","_SocrataID":"udy4-krk9","FCODE":"TRBSIN","SOURCE":"TRANSIT","range":0,"LOCATION":"COLBY DR NS GRENADIER DR","heading":0,"LTAR":"Y"},"_links":{"self":{"href":"140.184.132.237:5000/Halifax/52347aff4b9f4a54e533a016/","title":"Halifax"}},"etag":"2f7302174643ee6ea9481c6e7929949e9357fbd6","latitude":44.6606103762764,"_id":"52347aff4b9f4a54e533a016","type":"bus_stops"},{"loc":{"type":"Point","coordinates":[-63.50104206477937,44.67093167110721]},"updated":"Sat, 14 Sep 2013 15:04:31 GMT","created":"Sat, 14 Sep 2013 15:04:31 GMT","longitude":-63.50104206477937,"meta":{"SDATE":"Jan 2, 2009 12:00:00 AM","altitudeMode":"clampToGround","SACC":"IN","OBJECTID":"480","tilt":0,"altitude":0,"GOTIME":"6474","_SocrataID":"59ej-7y2c","FCODE":"TRBSAC","SOURCE":"TRANSIT","range":0,"LOCATION":"COLE HARBOUR RD FS CALDWELL RD","heading":0,"LTAR":"Y"},"_links":{"self":{"href":"140.184.132.237:5000/Halifax/52347aff4b9f4a54e533a017/","title":"Halifax"}},"etag":"70306d165d8616ecb883eea241e0bf7cc14f5a62","latitude":44.67093167110721,"_id":"52347aff4b9f4a54e533a017","type":"bus_stops"},{"loc":{"type":"Point","coordinates":[-63.48618268508804,44.67202117402092]},"updated":"Sat, 14 Sep 2013 15:04:31 GMT","created":"Sat, 14 Sep 2013 15:04:31 GMT","longitude":-63.48618268508804,"meta":{"SDATE":"Jun 4, 2010 12:00:00 AM","altitudeMode":"clampToGround","SACC":"IN","OBJECTID":"481","tilt":0,"altitude":0,"GOTIME":"6475","_SocrataID":"24x7-kjjt","FCODE":"TRBSSHAC","SOURCE":"TRANSIT","range":0,"LOCATION":"COLE HARBOUR RD FS CIVIC 1106","heading":0,"LTAR":"Y"},"_links":{"self":{"href":"140.184.132.237:5000/Halifax/52347aff4b9f4a54e533a018/","title":"Halifax"}},"etag":"ec9b858a7072815c1d84353636ea3d5b0e3e0129","latitude":44.67202117402092,"_id":"52347aff4b9f4a54e533a018","type":"bus_stops"},{"loc":{"type":"Point","coordinates":[-63.489113899202266,44.67158673272721]},"updated":"Sat, 14 Sep 2013 15:04:31 GMT","created":"Sat, 14 Sep 2013 15:04:31 GMT","longitude":-63.489113899202266,"meta":{"SDATE":"Jun 4, 2010 12:00:00 AM","altitudeMode":"clampToGround","SACC":"IN","OBJECTID":"483","tilt":0,"altitude":0,"GOTIME":"6477","_SocrataID":"852v-drum","FCODE":"TRBSAC","SOURCE":"TRANSIT","range":0,"LOCATION":"COLE HARBOUR RD FS CUMBERLAND DR","heading":0,"LTAR":"Y"},"_links":{"self":{"href":"140.184.132.237:5000/Halifax/52347aff4b9f4a54e533a019/","title":"Halifax"}},"etag":"86b8375aa2421307b606d00374573e93109fbd3b","latitude":44.67158673272721,"_id":"52347aff4b9f4a54e533a019","type":"bus_stops"},{"loc":{"type":"Point","coordinates":[-63.49942432667012,44.67131934636584]},"updated":"Sat, 14 Sep 2013 15:04:31 GMT","created":"Sat, 14 Sep 2013 15:04:31 GMT","longitude":-63.49942432667012,"meta":{"SDATE":"Jan 2, 2009 12:00:00 AM","altitudeMode":"clampToGround","SACC":"IN","OBJECTID":"484","tilt":0,"altitude":0,"GOTIME":"6478","_SocrataID":"u5f7-9gg5","FCODE":"TRBSSHAC","SOURCE":"TRANSIT","range":0,"LOCATION":"COLE HARBOUR RD FS OTAGO DR","heading":0,"LTAR":"Y"},"_links":{"self":{"href":"140.184.132.237:5000/Halifax/52347aff4b9f4a54e533a01a/","title":"Halifax"}},"etag":"4c6aba04c64cee290567a115d706efb5b501cd13","latitude":44.67131934636584,"_id":"52347aff4b9f4a54e533a01a","type":"bus_stops"},{"loc":{"type":"Point","coordinates":[-63.492189977385834,44.67161833076945]},"updated":"Sat, 14 Sep 2013 15:04:31 GMT","created":"Sat, 14 Sep 2013 15:04:31 GMT","longitude":-63.492189977385834,"meta":{"SDATE":"Jan 2, 2009 12:00:00 AM","altitudeMode":"clampToGround","SACC":"IN","OBJECTID":"486","tilt":0,"altitude":0,"GOTIME":"6480","_SocrataID":"y4eu-3dpg","FCODE":"TRBSSHAC","SOURCE":"TRANSIT","range":0,"LOCATION":"COLE HARBOUR RD AT SOBEYS","heading":0,"LTAR":"Y"},"_links":{"self":{"href":"140.184.132.237:5000/Halifax/52347aff4b9f4a54e533a01b/","title":"Halifax"}},"etag":"bc3abf0951cd324477c2f4aa5e75821817a246bc","latitude":44.67161833076945,"_id":"52347aff4b9f4a54e533a01b","type":"bus_stops"},{"loc":{"type":"Point","coordinates":[-63.50153476998344,44.67127238999035]},"updated":"Sat, 14 Sep 2013 15:04:31 GMT","created":"Sat, 14 Sep 2013 15:04:31 GMT","longitude":-63.50153476998344,"meta":{"SDATE":"Jun 4, 2010 12:00:00 AM","altitudeMode":"clampToGround","SACC":"IN","OBJECTID":"487","tilt":0,"altitude":0,"GOTIME":"6481","_SocrataID":"bemp-p22n","FCODE":"TRBSSHAC","SOURCE":"TRANSIT","range":0,"LOCATION":"COLE HARBOUR RD NS DOROTHEA DR","heading":0,"LTAR":"Y"},"_links":{"self":{"href":"140.184.132.237:5000/Halifax/52347aff4b9f4a54e533a01c/","title":"Halifax"}},"etag":"468f11bcec05c17aeca42d581300b2efa3a079a6","latitude":44.67127238999035,"_id":"52347aff4b9f4a54e533a01c","type":"bus_stops"},{"loc":{"type":"Point","coordinates":[-63.58696686738037,44.71650196404522]},"updated":"Sat, 14 Sep 2013 15:04:31 GMT","created":"Sat, 14 Sep 2013 15:04:31 GMT","longitude":-63.58696686738037,"meta":{"SDATE":"Jan 2, 2009 12:00:00 AM","altitudeMode":"clampToGround","SACC":"IN","OBJECTID":"489","tilt":0,"altitude":0,"GOTIME":"6483","_SocrataID":"pazx-9c89","FCODE":"TRBS","SOURCE":"TRANSIT","range":0,"LOCATION":"COLFORD AVE NS AKERLEY BLVD","heading":0,"LTAR":"Y"},"_links":{"self":{"href":"140.184.132.237:5000/Halifax/52347aff4b9f4a54e533a01d/","title":"Halifax"}},"etag":"ed392bcfd1e2e8c2e4f100fc976df1900e6dbb94","latitude":44.71650196404522,"_id":"52347aff4b9f4a54e533a01d","type":"bus_stops"},{"loc":{"type":"Point","coordinates":[-63.54121515309777,44.70154618372562]},"updated":"Sat, 14 Sep 2013 15:04:31 GMT","created":"Sat, 14 Sep 2013 15:04:31 GMT","longitude":-63.54121515309777,"meta":{"SDATE":"Jun 7, 2012 12:00:00 AM","altitudeMode":"clampToGround","SACC":"DV","OBJECTID":"491","tilt":0,"altitude":0,"GOTIME":"6485","_SocrataID":"6hw2-2keh","FCODE":"TRBSIN","SOURCE":"TRANSIT","range":0,"LOCATION":"COLONNA PLACE AT CIVIC 57","heading":0,"LTAR":"Y"},"_links":{"self":{"href":"140.184.132.237:5000/Halifax/52347aff4b9f4a54e533a01e/","title":"Halifax"}},"etag":"c9c34e01f70305fd47726e67f5302899e4c43249","latitude":44.70154618372562,"_id":"52347aff4b9f4a54e533a01e","type":"bus_stops"},{"loc":{"type":"Point","coordinates":[-63.58030316118871,44.70025672376142]},"updated":"Sat, 14 Sep 2013 15:04:31 GMT","created":"Sat, 14 Sep 2013 15:04:31 GMT","longitude":-63.58030316118871,"meta":{"SDATE":"Jun 7, 2012 12:00:00 AM","altitudeMode":"clampToGround","SACC":"DV","OBJECTID":"492","tilt":0,"altitude":0,"GOTIME":"6486","_SocrataID":"jx6a-r64a","FCODE":"TRBSIN","SOURCE":"TRANSIT","range":0,"LOCATION":"COMMODORE DR FS EILEEN STUBBS AVE [OB]","heading":0,"LTAR":"Y"},"_links":{"self":{"href":"140.184.132.237:5000/Halifax/52347aff4b9f4a54e533a01f/","title":"Halifax"}},"etag":"4df2c802e08b36daf8073d4de4890965d087de4d","latitude":44.70025672376142,"_id":"52347aff4b9f4a54e533a01f","type":"bus_stops"},{"loc":{"type":"Point","coordinates":[-63.58040438083896,44.700239539505304]},"updated":"Sat, 14 Sep 2013 15:04:31 GMT","created":"Sat, 14 Sep 2013 15:04:31 GMT","longitude":-63.58040438083896,"meta":{"SDATE":"Jun 7, 2012 12:00:00 AM","altitudeMode":"clampToGround","SACC":"DV","OBJECTID":"493","tilt":0,"altitude":0,"GOTIME":"6487","_SocrataID":"h326-iivu","FCODE":"TRBSIN","SOURCE":"TRANSIT","range":0,"LOCATION":"COMMODORE DR FS EILEEN STUBBS AVE TO SACKVILLE","heading":0,"LTAR":"Y"},"_links":{"self":{"href":"140.184.132.237:5000/Halifax/52347aff4b9f4a54e533a020/","title":"Halifax"}},"etag":"65793e3abb044efbed9f87a12b0a9445c699b2f5","latitude":44.700239539505304,"_id":"52347aff4b9f4a54e533a020","type":"bus_stops"},{"loc":{"type":"Point","coordinates":[-63.58198689014881,44.69991028358908]},"updated":"Sat, 14 Sep 2013 15:04:31 GMT","created":"Sat, 14 Sep 2013 15:04:31 GMT","longitude":-63.58198689014881,"meta":{"SDATE":"Oct 30, 2007 12:00:00 AM","altitudeMode":"clampToGround","SACC":"DV","OBJECTID":"494","tilt":0,"altitude":0,"GOTIME":"6488","_SocrataID":"bdz9-x4qy","FCODE":"TRBS","SOURCE":"TRANSIT","range":0,"LOCATION":"COMMODORE DR FS OPP BROWNLOW AVE TO SACKVILLE","heading":0,"LTAR":"Y"},"_links":{"self":{"href":"140.184.132.237:5000/Halifax/52347aff4b9f4a54e533a021/","title":"Halifax"}},"etag":"c0dacf8a6d7686f1ccc9b8b351714041c7024a17","latitude":44.69991028358908,"_id":"52347aff4b9f4a54e533a021","type":"bus_stops"},{"loc":{"type":"Point","coordinates":[-63.58167317783946,44.69979976503699]},"updated":"Sat, 14 Sep 2013 15:04:31 GMT","created":"Sat, 14 Sep 2013 15:04:31 GMT","longitude":-63.58167317783946,"meta":{"SDATE":"Oct 30, 2007 12:00:00 AM","altitudeMode":"clampToGround","SACC":"DV","OBJECTID":"496","tilt":0,"altitude":0,"GOTIME":"6490","_SocrataID":"3ngz-83id","FCODE":"TRBSAC","SOURCE":"TRANSIT","range":0,"LOCATION":"COMMODORE DR NS BROWNLOW AVE","heading":0,"LTAR":"Y"},"_links":{"self":{"href":"140.184.132.237:5000/Halifax/52347aff4b9f4a54e533a022/","title":"Halifax"}},"etag":"236fce21f4f25af4b7aec72d742ac5ecfc491fba","latitude":44.69979976503699,"_id":"52347aff4b9f4a54e533a022","type":"bus_stops"},{"loc":{"type":"Point","coordinates":[-63.5820881087198,44.69989309783043]},"updated":"Sat, 14 Sep 2013 15:04:31 GMT","created":"Sat, 14 Sep 2013 15:04:31 GMT","longitude":-63.5820881087198,"meta":{"SDATE":"Oct 30, 2007 12:00:00 AM","altitudeMode":"clampToGround","SACC":"DV","OBJECTID":"495","tilt":0,"altitude":0,"GOTIME":"6489","_SocrataID":"74gq-k8aj","FCODE":"TRBS","SOURCE":"TRANSIT","range":0,"LOCATION":"COMMODORE DR FS OPP BROWNLOW AVE [OB]","heading":0,"LTAR":"Y"},"_links":{"self":{"href":"140.184.132.237:5000/Halifax/52347aff4b9f4a54e533a023/","title":"Halifax"}},"etag":"2c579ad39e319195d309df5cf6439d1a61a9c3e6","latitude":44.69989309783043,"_id":"52347aff4b9f4a54e533a023","type":"bus_stops"},{"loc":{"type":"Point","coordinates":[-63.61762154571761,44.65584053533967]},"updated":"Sat, 14 Sep 2013 15:04:31 GMT","created":"Sat, 14 Sep 2013 15:04:31 GMT","longitude":-63.61762154571761,"meta":{"SDATE":"Jun 4, 2010 12:00:00 AM","altitudeMode":"clampToGround","SACC":"DV","OBJECTID":"499","tilt":0,"altitude":0,"GOTIME":"6493","_SocrataID":"v9mc-igqh","FCODE":"TRBSSHAC","SOURCE":"TRANSIT","range":0,"LOCATION":"CONNAUGHT AVE FS REGENT RD","heading":0,"LTAR":"Y"},"_links":{"self":{"href":"140.184.132.237:5000/Halifax/52347aff4b9f4a54e533a024/","title":"Halifax"}},"etag":"ff6633f1758cb425dc1eaea2021c66400dc1163a","latitude":44.65584053533967,"_id":"52347aff4b9f4a54e533a024","type":"bus_stops"},{"loc":{"type":"Point","coordinates":[-63.60606541129508,44.644770945680115]},"updated":"Sat, 14 Sep 2013 15:04:31 GMT","created":"Sat, 14 Sep 2013 15:04:31 GMT","longitude":-63.60606541129508,"meta":{"SDATE":"Jun 4, 2010 12:00:00 AM","altitudeMode":"clampToGround","SACC":"DV","OBJECTID":"500","tilt":0,"altitude":0,"GOTIME":"6494","_SocrataID":"vwnx-32hs","FCODE":"TRBSAC","SOURCE":"TRANSIT","range":0,"LOCATION":"CONNAUGHT AVE AT CIVIC 2248","heading":0,"LTAR":"Y"},"_links":{"self":{"href":"140.184.132.237:5000/Halifax/52347aff4b9f4a54e533a025/","title":"Halifax"}},"etag":"0f39014b796c7ecb4667cf80494f91413ffab9a4","latitude":44.644770945680115,"_id":"52347aff4b9f4a54e533a025","type":"bus_stops"},{"loc":{"type":"Point","coordinates":[-63.60626415859355,44.64569407821389]},"updated":"Sat, 14 Sep 2013 15:04:31 GMT","created":"Sat, 14 Sep 2013 15:04:31 GMT","longitude":-63.60626415859355,"meta":{"SDATE":"Jun 4, 2010 12:00:00 AM","altitudeMode":"clampToGround","SACC":"IN","OBJECTID":"501","tilt":0,"altitude":0,"GOTIME":"6495","_SocrataID":"k569-7mjn","FCODE":"TRBSAC","SOURCE":"TRANSIT","range":0,"LOCATION":"CONNAUGHT AVE AT CIVIC 2405","heading":0,"LTAR":"Y"},"_links":{"self":{"href":"140.184.132.237:5000/Halifax/52347aff4b9f4a54e533a026/","title":"Halifax"}},"etag":"f65a565ad13c2bbf5ab13c68ffd3703a07d3d809","latitude":44.64569407821389,"_id":"52347aff4b9f4a54e533a026","type":"bus_stops"},{"loc":{"type":"Point","coordinates":[-63.61723441246349,44.65472976303609]},"updated":"Sat, 14 Sep 2013 15:04:31 GMT","created":"Sat, 14 Sep 2013 15:04:31 GMT","longitude":-63.61723441246349,"meta":{"SDATE":"Jan 2, 2009 12:00:00 AM","altitudeMode":"clampToGround","SACC":"IN","OBJECTID":"502","tilt":0,"altitude":0,"GOTIME":"6496","_SocrataID":"k8bb-jm9h","FCODE":"TRBSAC","SOURCE":"TRANSIT","range":0,"LOCATION":"CONNAUGHT AVE AT CIVIC 3284","heading":0,"LTAR":"Y"},"_links":{"self":{"href":"140.184.132.237:5000/Halifax/52347aff4b9f4a54e533a027/","title":"Halifax"}},"etag":"a3de6f8b1649ea2b25e044108b54455ec58d0a05","latitude":44.65472976303609,"_id":"52347aff4b9f4a54e533a027","type":"bus_stops"},{"loc":{"type":"Point","coordinates":[-63.61540284684233,44.65249345915303]},"updated":"Sat, 14 Sep 2013 15:04:31 GMT","created":"Sat, 14 Sep 2013 15:04:31 GMT","longitude":-63.61540284684233,"meta":{"SDATE":"Jun 4, 2010 12:00:00 AM","altitudeMode":"clampToGround","SACC":"DV","OBJECTID":"504","tilt":0,"altitude":0,"GOTIME":"6498","_SocrataID":"ce38-a66j","FCODE":"TRBSSHAC","SOURCE":"TRANSIT","range":0,"LOCATION":"CONNAUGHT AVE NS ROSLYN RD","heading":0,"LTAR":"Y"},"_links":{"self":{"href":"140.184.132.237:5000/Halifax/52347aff4b9f4a54e533a028/","title":"Halifax"}},"etag":"d5d2301c5ea0382689fc23ab934047ddaa69af18","latitude":44.65249345915303,"_id":"52347aff4b9f4a54e533a028","type":"bus_stops"},{"loc":{"type":"Point","coordinates":[-63.61585244597194,44.65277593352178]},"updated":"Sat, 14 Sep 2013 15:04:31 GMT","created":"Sat, 14 Sep 2013 15:04:31 GMT","longitude":-63.61585244597194,"meta":{"SDATE":"Jun 4, 2010 12:00:00 AM","altitudeMode":"clampToGround","SACC":"DV","OBJECTID":"506","tilt":0,"altitude":0,"GOTIME":"6500","_SocrataID":"5prr-fa6p","FCODE":"TRBSAC","SOURCE":"TRANSIT","range":0,"LOCATION":"CONNAUGHT AVE OPP ROSLYN RD","heading":0,"LTAR":"Y"},"_links":{"self":{"href":"140.184.132.237:5000/Halifax/52347aff4b9f4a54e533a029/","title":"Halifax"}},"etag":"15866100ff9d372256d5b53c1b83f3790476f8ed","latitude":44.65277593352178,"_id":"52347aff4b9f4a54e533a029","type":"bus_stops"},{"loc":{"type":"Point","coordinates":[-63.58430848803886,44.652223440827676]},"updated":"Sat, 14 Sep 2013 15:04:31 GMT","created":"Sat, 14 Sep 2013 15:04:31 GMT","longitude":-63.58430848803886,"meta":{"SDATE":"Jun 4, 2010 12:00:00 AM","altitudeMode":"clampToGround","SACC":"IN","OBJECTID":"508","tilt":0,"altitude":0,"GOTIME":"6502","_SocrataID":"z36m-hzzz","FCODE":"TRBSAC","SOURCE":"TRANSIT","range":0,"LOCATION":"CORNWALLIS ST FS GOTTINGEN ST","heading":0,"LTAR":"Y"},"_links":{"self":{"href":"140.184.132.237:5000/Halifax/52347aff4b9f4a54e533a02a/","title":"Halifax"}},"etag":"872c3940e9f4437e709d765889b96e4d4f0121cb","latitude":44.652223440827676,"_id":"52347aff4b9f4a54e533a02a","type":"bus_stops"},{"loc":{"type":"Point","coordinates":[-63.58361797472506,44.65248582497572]},"updated":"Sat, 14 Sep 2013 15:04:31 GMT","created":"Sat, 14 Sep 2013 15:04:31 GMT","longitude":-63.58361797472506,"meta":{"SDATE":"Oct 30, 2007 12:00:00 AM","altitudeMode":"clampToGround","SACC":"DV","OBJECTID":"509","tilt":0,"altitude":0,"GOTIME":"6503","_SocrataID":"3gqu-sb4m","FCODE":"TRBSAC","SOURCE":"TRANSIT","range":0,"LOCATION":"CORNWALLIS ST FS GOTTINGEN ST","heading":0,"LTAR":"Y"},"_links":{"self":{"href":"140.184.132.237:5000/Halifax/52347aff4b9f4a54e533a02b/","title":"Halifax"}},"etag":"bd8ec6606f2b83b294882f3286442e58380552c5","latitude":44.65248582497572,"_id":"52347aff4b9f4a54e533a02b","type":"bus_stops"},{"loc":{"type":"Point","coordinates":[-63.58610182302061,44.65087677177004]},"updated":"Sat, 14 Sep 2013 15:04:31 GMT","created":"Sat, 14 Sep 2013 15:04:31 GMT","longitude":-63.58610182302061,"meta":{"SDATE":"Oct 30, 2007 12:00:00 AM","altitudeMode":"clampToGround","SACC":"DV","OBJECTID":"512","tilt":0,"altitude":0,"GOTIME":"6506","_SocrataID":"3fzu-n6w8","FCODE":"TRBSAC","SOURCE":"TRANSIT","range":0,"LOCATION":"CORNWALLIS ST NS BAUER ST","heading":0,"LTAR":"Y"},"_links":{"self":{"href":"140.184.132.237:5000/Halifax/52347aff4b9f4a54e533a02c/","title":"Halifax"}},"etag":"4050b2f7cd44056646de73a4fc7e05c3c5fba678","latitude":44.65087677177004,"_id":"52347aff4b9f4a54e533a02c","type":"bus_stops"},{"loc":{"type":"Point","coordinates":[-63.63194831467632,44.656567176093816]},"updated":"Sat, 14 Sep 2013 15:04:31 GMT","created":"Sat, 14 Sep 2013 15:04:31 GMT","longitude":-63.63194831467632,"meta":{"SDATE":"Jan 2, 2009 12:00:00 AM","altitudeMode":"clampToGround","SACC":"IN","OBJECTID":"614","tilt":0,"altitude":0,"GOTIME":"6609","_SocrataID":"2evw-5xji","FCODE":"TRBSAC","SOURCE":"TRANSIT","range":0,"LOCATION":"DUTCH VILLAGE RD AT ANDREW ST","heading":0,"LTAR":"Y"},"_links":{"self":{"href":"140.184.132.237:5000/Halifax/52347aff4b9f4a54e533a02d/","title":"Halifax"}},"etag":"92e780bf0366f07dc65054491a22b84a68f5bac5","latitude":44.656567176093816,"_id":"52347aff4b9f4a54e533a02d","type":"bus_stops"}],"_links":{"self":{"href":"140.184.132.237:5000/Halifax/","title":"Halifax"},"last":{"href":"140.184.132.237:5000/Halifax/?where={\"type\":{\"$nin\":[\"crime\"]}}&page=215","title":"last page"},"parent":{"href":"140.184.132.237:5000","title":"home"},"next":{"href":"140.184.132.237:5000/Halifax/?where={\"type\":{\"$nin\":[\"crime\"]}}&page=2","title":"next page"}}}
+</pre>
+
+
+</div>
+
+</body>
+</html>
