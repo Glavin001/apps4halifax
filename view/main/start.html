@@ -71,7 +71,7 @@
 
 		var map = L.map('map').setView([51.505, -0.09], 13);
 
-		L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
+		L.tileLayer('http://a.tiles.mapbox.com/v3/newms32.map-qor7z0a2/{z}/{x}/{y}.png', {
 			maxZoom: 18,
 			attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>'
 		}).addTo(map);
@@ -104,5 +104,38 @@
 
 		map.on('click', onMapClick);
 	</script>
+
+	<div id="fb-root"></div>
+	<script type="text/javascript">
+		window.fbAsyncInit = function() {
+		FB.init({appId: '<?php echo $appId; ?>',cookie: true,xfbml: true,channelUrl: '<?php echo $return_url; ?>channel.php',oauth: true});};
+		(function() {var e = document.createElement('script');
+		e.async = true;e.src = document.location.protocol +'//connect.facebook.net/en_US/all.js';
+		document.getElementById('fb-root').appendChild(e);}());
+
+		function CallAfterLogin(){
+		        FB.login(function(response) {
+		        if (response.status === "connected")
+		        {
+		            LodingAnimate(); //Animate login
+		            FB.api('/me', function(data) {
+		              if(data.email == null)
+		              {
+		                    //Facbeook user email is empty, you can check something like this.
+		                    alert("You must allow us to access your email id!");
+		                    ResetAnimate();
+
+		              }else{
+		                    AjaxResponse();
+		              }
+		          });
+		         }
+		    });
+		}
+
+	</script>
+
+
+
 </body>
 </html>
