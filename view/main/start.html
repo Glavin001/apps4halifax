@@ -233,7 +233,7 @@
 			
 			console.log('Mapclick', e.latlng);
 
-			hfx.geoNear(e.latlng.lat, e.latlng.lng, 0.001, function(data) { 
+			hfx.geoNear(e.latlng.lat, e.latlng.lng, 1.0, function(data) { 
 
 				console.log(data); 
 
