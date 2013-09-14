@@ -32,6 +32,10 @@
 				console.log([pos.coords.latitude, pos.coords.longitude]);
 			}
 			
+			function pressRate(element){
+				
+			}
+
 			function fail(error) {
 				
 			}
@@ -53,6 +57,12 @@
 	</div><!-- /content -->
 
  	<div data-role="panel" data-display="overlay" id="your-location-panel" data-theme="b">
+
+		<div class="ratepanel" style="display:hidden">
+ 			Accessability: <br/>
+ 			Service: <br/> 
+ 		</div>
+
 		<div class="comment_box" style="height:450px;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
 		
 		</div>
@@ -60,7 +70,7 @@
         <textarea></textarea> 
  		<button>Comment</button>
  		<button data-theme="a">Snap Picture</button>
- 		<button data-theme="a">Rate This</button>
+ 		<button data-theme="a" onclick="pressRate(this)">Rate This</button>
  		</div>
 <!--         <a href="#" data-rel="close" data-role="button" data-mini="true" data-inline="true" data-icon="delete" data-iconpos="right">Close</a> -->
     </div><!-- /panel -->
@@ -73,7 +83,6 @@
         <textarea></textarea> 
  		<button>Comment</button>
  		<button data-theme="a">Snap Picture</button>
- 		<button data-theme="a" onclick="pressRate()">Rate This</button>
  		</div>
 <!--         <a href="#" data-rel="close" data-role="button" data-mini="true" data-inline="true" data-icon="delete" data-iconpos="right">Close</a> -->
     </div><!-- /panel -->
@@ -109,8 +118,8 @@
 			<ul>
 				<li><a href="#your-location-panel" data-shadow="false" data-iconshadow="false" class="ui-icon-nodisc">Your Location</a></li>
 				<li><a href="#trending-panel" data-shadow="false" data-iconshadow="false" class="ui-icon-nodisc">Trending</a></li>
-				<li><a href="#nearby-panel" data-shadow="false" data-iconshadow="false" class="ui-icon-nodisc">Things Happening Nearby</a></li>
 				<li><a href="#friends-panel" data-shadow="false" data-iconshadow="false" class="ui-icon-nodisc">Friends</a></li>
+				<li><a href="#nearby-panel" data-shadow="false" data-iconshadow="false" class="ui-icon-nodisc">Search</a></li>
 			</ul>
 		</div><!-- /navbar -->
 	</div><!-- /footer -->
@@ -155,27 +164,21 @@
 		}).addTo(map);
 
 
-/*		L.marker([51.5, -0.09]).addTo(map)
-			.bindPopup("<br/>Recent Updates<br/>More..").openPopup();
+		L.marker(usersPosition).addTo(map)
+			.bindPopup("Recent Updates<br/>More..").openPopup();
 
-		L.circle([51.508, -0.11], 500, {
+		L.circle(usersPosition, 500, {
 			color: 'red',
 			fillColor: '#f03',
 			fillOpacity: 0.5
 		}).addTo(map).bindPopup("I am a circle.");
-
-		L.polygon([
-			[51.509, -0.08],
-			[51.503, -0.06],
-			[51.51, -0.047]
-		]).addTo(map).bindPopup("I am a polygon.");*/
 
 		var popup = L.popup();
 
 		function onMapClick(e) {
 			popup
 				.setLatLng(e.latlng)
-				.setContent("Bob said: " + e.latlng.toString())
+				.setContent(e.latlng.toString())
 				.openOn(map);
 		}
 
