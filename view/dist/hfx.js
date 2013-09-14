@@ -34,7 +34,19 @@ Description: Hfx.js library for integration with our RESTful API.
 		});
 	};
 */
-
+	
+	self..transitWithGeotime(gotime, callback) {
+		var query = { 'meta': 'GOTIME': gotime } };
+		return $.ajax({
+			type: "GET",
+			url: apiUrl,
+			data: { 'max_results': 100, 'where': JSON.stringify(query) },
+			success: function(data) {
+				return callback && callback(data);
+			}
+			});
+		};
+	}
 
 	
 	self.geoNear = function(lat, lon, side, callback, options) {
@@ -50,7 +62,7 @@ Description: Hfx.js library for integration with our RESTful API.
 		return $.ajax({
 			type: "GET",
 			url: apiUrl,
-			data: { 'max_results': 100, 'where': JSON.stringify(query) },
+			data: { 'where': JSON.stringify(query) },
 			success: function(data) {
 				return callback && callback(data);
 			}
