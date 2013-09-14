@@ -37,9 +37,9 @@
 		<div data-role="navbar">
 			<ul>
 				<li><a href="a.html">What's Happening</a></li>
-				<li><a href="b.html">Nearby Threads</a></li>
+				<li><a href="b.html">Cool Things Nearby</a></li>
 				<li><a href="b.html">Settings <img width=16 height=16 src="../dist/images/main/settings.png" style="margin-left:5px;position:fixed" /></a></li>
-				<li><a href="b.html">Account</a></li>
+				<li><a href="b.html" style="background-color:green">Your Location</a></li>
 			</ul>
 		</div><!-- /navbar -->
 	</div><!-- /footer -->
@@ -67,7 +67,7 @@
 
 
 		L.marker([51.5, -0.09]).addTo(map)
-			.bindPopup("<b>WikiFacts about this place</b>").openPopup();
+			.bindPopup("<br/>Recent Updates<br/>More..").openPopup();
 
 		L.circle([51.508, -0.11], 500, {
 			color: 'red',
