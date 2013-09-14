@@ -1,8 +1,9 @@
 <HTML>
 <head>
-<script src="http://codeorigin.jquery.com/jquery-2.0.3.min.js"></script>
-<script src="socrata/socrata.js"></script>
-<script src="js/toMongo.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.8/require.min.js"></script>
+	<script src="http://codeorigin.jquery.com/jquery-2.0.3.min.js"></script>
+	<script src="socrata/socrata.js"></script>
+	<script src="js/toMongo.js"></script>
 </head>
 <body>
 
@@ -21,14 +22,27 @@ socrata.views(null, function(data) {
 
 	var busStopsChildView = null;
 	busStopsView.childViewAt(0, null, function(data){
-		console.log('ChildView:',data);
+		console.log('busStopsChildView:',data);
 		busStopsChildView = data;
 
 		busStopsChildView.rows(null, function(data) { 
-			console.log('Rows:', data);
+			console.log('Bus Stop Rows:', data);
 		});
 
 	});
+
+
+	var crimeChildView = null;
+	crimeView.childViewAt(0, null, function(data){
+		console.log('crimeChildView:',data);
+		crimeChildView = data;
+
+		crimeChildView.rows(null, function(data) { 
+			console.log('Crime Rows:', data);
+		});
+
+	});
+
 
 });
 /*

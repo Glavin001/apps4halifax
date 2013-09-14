@@ -1,0 +1,11 @@
+{
+"name": "Wikifax",
+"version":"1.0.0",
+"author":"Glavin Wiechert <glavin.wiechert@gmail.com>",
+"description": "Geospatial Wikis for Halifax.",
+"dependencies": {
+"mongodb":"*",
+"eve":"*",
+"togeojson":"*"
+}
+}
