@@ -1,7 +1,7 @@
 
 
 var d = null; 
-$.get('data/Polling District.kml', function(data) { 
+$.get('BusStops.kml', function(data) { 
 	console.log(data); 
 	d = data; 
 
