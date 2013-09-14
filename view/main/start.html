@@ -19,10 +19,39 @@
 			$("#mainView").show("slow");
 			$("#main").hide("slow");
 		}
-		$(".leaflet-control-attribution leaflet-control").remove();
 	</script>
 </head>
 <body>
+
+	<div id="login">
+
+<div data-role="page">
+
+	<div data-role="content">
+		HAHAHAH
+		Dashboard You are in . Trending Locations
+		<p><a href="#" onclick="showMap()">WOO</a></p>		
+	</div><!-- /content -->
+
+	<div data-role="header" data-id="foo1" data-position="fixed">
+		<div data-role="navbar">
+			<ul>
+				<li><a href="b.html">Your Location</a></li>
+				<li><a href="a.html">Trending</a></li>
+				<li><a href="b.html">Things Happening Nearby</a></li>
+				<li><a href="b.html">Challenges (Points: 1) <img width=16 height=16 src="../dist/images/main/settings.png" style="margin-left:5px;position:fixed" /></a></li>
+			</ul>
+		</div><!-- /navbar -->
+	</div><!-- /footer -->
+
+</div><!-- /page -->
+
+		<a href="#" onclick="showMap()">Click here</a>
+
+
+	</div>
+
+
 	<div id="main">
 
 <div data-role="page">
@@ -36,10 +65,10 @@
 	<div data-role="header" data-id="foo1" data-position="fixed">
 		<div data-role="navbar">
 			<ul>
-				<li><a href="a.html">What's Happening</a></li>
-				<li><a href="b.html">Nearby</a></li>
+				<li><a href="b.html">Your Location</a></li>
+				<li><a href="a.html">Trending</a></li>
+				<li><a href="b.html">Things Happening Nearby</a></li>
 				<li><a href="b.html">Challenges <img width=16 height=16 src="../dist/images/main/settings.png" style="margin-left:5px;position:fixed" /></a></li>
-				<li><a href="b.html" style="background-color:green">Your Location</a></li>
 			</ul>
 		</div><!-- /navbar -->
 	</div><!-- /footer -->
@@ -92,6 +121,7 @@
 		}
 
 		map.on('click', onMapClick);
+		$("#mainView").hide();
 	</script>
 </body>
 </html>
