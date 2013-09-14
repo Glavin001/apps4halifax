@@ -7,6 +7,7 @@
 
 <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
 
+<script src="hfx.js"></script>
 
 </head>
 <body>
@@ -19,15 +20,19 @@
 
 <h2>Retrieving Data <small>GET request</small></h2>
 <pre class="prettyprint">
-var whereQuery = {'type': { $nin: [ 'crime' ] };
+var whereQuery = {'type': { $nin: [ 'crime' ] }};
 $.ajax({
 	type:"GET",
 	url:"http://140.184.132.237:5000/Halifax/",
-	data: {'where':JSON.stringify(whereQuery})},
+	data: {'where':JSON.stringify(whereQuery)},
 	success: function(data) {
 		console.log(data);
 	}
 });
+</pre>
+
+<pre class="prettyprint">
+hfx.geoNear(44.6459460142, -63.5739672999, 0.00001, function(data) { console.log(data); }, {'type': { $ne : 'building_symbols' } });
 </pre>
 
 

@@ -1,11 +1,11 @@
 
 /*
 Author: Glavin Wiechert
-Creation Date: September 12, 2013
-Description: JavaScript SDK for the Socrata API.
+Creation Date: September 14, 2013
+Description: Hfx.js library for integration with our RESTful API.
 */
 
-;(function( hfk, $, undefined ) {
+;(function( hfx, $, undefined ) {
 	// For easy access and minification.
 	var self = hfx;
 
@@ -21,9 +21,9 @@ Description: JavaScript SDK for the Socrata API.
 			}
 		});
 	};
-	/*
 
-	self.where(query, callback) {
+/*
+	self.where = function(query, callback) {
 		return self.apiCall({
 			
 			var whereQuery = {'type': { $nin: [ 'crime' ] };
@@ -33,21 +33,37 @@ Description: JavaScript SDK for the Socrata API.
 			callback: callback
 		});
 	};
+*/
+	
+	self.geoNear = function(lat, lon, side, callback, options) {
+		return self.geoWithin(lat-side/2, lon-side/2, lat+side/2, lon+side/2, callback, options);
+	}
 
-	self.geoWith(minLat, minLon, maxLat, maxLon, callback, options) {
+
+	self.geoWithin = function(minLat, minLon, maxLat, maxLon, callback, options) {
+		var query = options || { };
+		query['latitude'] = { $gte : minLat, $lte : maxLat } ;
+		query['longitude'] =  { $gte : minLon, $lte : maxLon } ;
+		/*
+		(
+				JSON.stringify({ 'latitude' : { $gte : minLat, $lte : maxLat } }), 
+				JSON.stringify({ 'longitude' : { $gte : minLon, $lte : maxLon } })
+				)
+		*/
 		return $.ajax({
-			url: 'http://140.184.132.237:5000/Halifax/',
-			data': {'where': JSON.stringify({ "" }) + '&' + JSON.stringify({ }) }
-
+			type: "GET",
+			url: apiUrl,
+			data: {'where': JSON.stringify(query) },
+			success: function(data) {
+				return callback && callback(data);
+			}
 			});
-		});
-
-	var Query = function() {
-
-		this.text = function() {
-
 		};
 
+/*
+	var Query = function() {
+		this.text = function() {
+		};
 	};
 */
 
