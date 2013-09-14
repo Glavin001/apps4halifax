@@ -30,12 +30,13 @@
 			},{'type':'bus_stops'});
 
 
-			hfx.geoNear(usersPosition[0],usersPosition[1],0.2,function(data){
+			hfx.geoNear(usersPosition[0],usersPosition[1],50,function(data){
 				var items = data["_items"];
+				console.log(data);
 				for (var i = items.length - 1; i >= 0; i--) {
 					var meta = items[i]["meta"];
 					var item_position = [items[i]["latitude"],items[i]["longitude"]];
-					console.log(meta);
+					
 					var myIcon = L.icon({
 					    iconUrl: 'images/bus.png',
 					});
@@ -52,13 +53,6 @@
 	      		checkNewThings();
 
 	      	});
-
-
-		   $("#wrapper").bind("mousewheel", function (event,delta,nbr) 
-		   {
-		        event;
-		   }
-
 		});
 	</script>
 
@@ -89,7 +83,7 @@
 </head>
 <body>
 
-	<div id="wrapper">
+
 	<div id="main">
 
 <div data-role="page">
@@ -233,7 +227,7 @@
 			
 			console.log('Mapclick', e.latlng);
 
-			hfx.geoNear(e.latlng.lat, e.latlng.lng, 1.0, function(data) { 
+			hfx.geoNear(e.latlng.lat, e.latlng.lng, 0.001, function(data) { 
 
 				console.log(data); 
 
