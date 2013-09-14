@@ -2,7 +2,7 @@
 echo "Stopping any running Python processes."
 killall python
 echo "Starting MongoDB"
-mongod &
+#mongod &
 echo "Starting Eve"
 python server/server.py &
 echo "Starting Python Simple HTTP Server"

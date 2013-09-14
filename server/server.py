@@ -15,7 +15,6 @@ app = Eve()
 def before():
     print('the request object ready to be processed:', request)
 
-
 @app.after_request
 def after(response):
     """
@@ -26,4 +25,4 @@ def after(response):
     return response
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0')
