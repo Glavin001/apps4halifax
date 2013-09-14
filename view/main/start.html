@@ -33,7 +33,7 @@
 			}
 			
 			function pressRate(element){
-				
+				alert('test');
 			}
 
 			function fail(error) {
@@ -59,11 +59,18 @@
  	<div data-role="panel" data-display="overlay" id="your-location-panel" data-theme="b">
 
 		<div class="ratepanel" style="display:hidden">
- 			Accessability: <br/>
+ 			<div data-role="fieldcontain">
+				<label for="slider">Service</label><br/>
+		 		<input type="range" name="slider" id="slider" value="0" min="0" max="100"  />
+			</div>
+ 			<div data-role="fieldcontain">
+				<label for="slider">Accessability</label><br/>
+		 		<input type="range" name="slider" id="slider" value="0" min="0" max="100"  />
+			</div>
  			Service: <br/> 
  		</div>
 
-		<div class="comment_box" style="height:450px;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
+		<div class="comment_box" style="height:390px;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
 		
 		</div>
 		<div class="current_comment">
