@@ -45,6 +45,9 @@
 		}
 	</script>
 
+	<!-- RESTful API -->
+	<script src="../dist/hfx.js"></script>
+
 </head>
 <body>
 
@@ -176,10 +179,20 @@
 		var popup = L.popup();
 
 		function onMapClick(e) {
+			
+			console.log('Mapclick', e.latlng);
+
+			hfx.geoNear(e.latlng.lat, e.latlng.lng, 0.001, function(data) { 
+
+				console.log(data); 
+
 			popup
 				.setLatLng(e.latlng)
-				.setContent(e.latlng.toString())
+				.setContent(e.latlng.toString() + JSON.stringify(data) )
 				.openOn(map);
+
+			});
+
 		}
 
 		map.on('click', onMapClick);
