@@ -38,20 +38,48 @@
 					var item_position = [items[i]["latitude"],items[i]["longitude"]];
 					
 					var myIcon = L.icon({
-					    iconUrl: 'images/bus.png',
+					    iconUrl: 'images/trail.png',
 					});
 					L.marker(item_position, {icon: myIcon}).addTo(map)
 						.bindPopup("<b>"+meta["LOCATION"]+"</b><br/><br/>").openPopup();
 
+					var lats = [];
+					for (var j = items[i]["loc"]["coordinates"].length - 1; j >= 0; j--) {
+						lats.push(new L.LatLng(items[i]["loc"]["coordinates"][j][0], items[i]["loc"]["coordinates"][j][1]));
+					};
+					var polyline = L.polyline(lats, {color: 'red',weight: 3, opacity: 1, smoothFactor: 1}).addTo(map);
 				};
-			},{'type':'trails'});
+			},{'type':'zoning_boundaries'});
+
+
+			hfx.geoNear(usersPosition[0],usersPosition[1],100,function(data){
+				console.log(data);
+				var items = data["_items"];
+				console.log(data);
+				for (var i = items.length - 1; i >= 0; i--) {
+					var meta = items[i]["meta"];
+					var item_position = [items[i]["latitude"],items[i]["longitude"]];
+					
+					var myIcon = L.icon({
+					    iconUrl: 'images/trail.png',
+					});
+					L.marker(item_position, {icon: myIcon}).addTo(map)
+						.bindPopup("<b>"+meta["LOCATION"]+"</b><br/><br/>").openPopup();
+
+					var lats = [];
+					for (var j = items[i]["loc"]["coordinates"].length - 1; j >= 0; j--) {
+						lats.push(new L.LatLng(items[i]["loc"]["coordinates"][j][0], items[i]["loc"]["coordinates"][j][1]));
+					};
+					var polyline = L.polyline(lats, {color: 'red',weight: 3, opacity: 1, smoothFactor: 1}).addTo(map);
+				};
+			},{'type':'park_recreation_features'});
+
 		}
 		$(document).ready(function() {
 			$( ".comment_box" ).each(function (i) {
 				$(this).height($(this).parent().height()-$(this).next(".current_comment").height()-25);
 	      		//setInterval ( "checkNewThings()", 10000 );
 	      		checkNewThings();
-
 	      	});
 		});
 	</script>
@@ -151,13 +179,8 @@
 
  	<div data-role="panel" data-display="overlay" id="nearby-panel" data-theme="b">
 		<div class="comment_box" style="height:500px;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
-		
+			
 		</div>
-		<div class="current_comment">
-        <textarea></textarea> 
- 		<button>Comment</button>
- 		<button data-theme="a">Snap Picture</button>
- 		</div>
 <!--         <a href="#" data-rel="close" data-role="button" data-mini="true" data-inline="true" data-icon="delete" data-iconpos="right">Close</a> -->
     </div><!-- /panel -->
 
@@ -215,7 +238,7 @@
 		L.marker(usersPosition).addTo(map)
 			.bindPopup("Recent Updates<br/>More..").openPopup();
 
-		L.circle(usersPosition, 500, {
+		L.circle(usersPosition, 200, {
 			color: 'red',
 			fillColor: '#f03',
 			fillOpacity: 0.5
@@ -240,7 +263,13 @@
 
 		}
 
+		function moveMap(){
+			map.getCenter().lat;
+			map.getCenter().lng;
+		}
+
 		map.on('click', onMapClick);
+		map.on('moveend', moveMap);
 	</script>
 
 
