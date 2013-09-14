@@ -1,0 +1,71 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node', '/usr/local/bin/npm', 'install' ]
+2 info using npm@1.3.8
+3 info using node@v0.10.18
+4 warn package.json Wikifax@1.0.0 No repository field.
+5 verbose readDependencies using package.json deps
+6 verbose install where, deps [ '/home/g_wiechert/apps4halifax',
+6 verbose install   [ 'mongodb', 'eve', 'togeojson', 'flask' ] ]
+7 info preinstall Wikifax@1.0.0
+8 verbose readDependencies using package.json deps
+9 verbose cache add [ 'flask@*', null ]
+10 verbose cache add name=undefined spec="flask@*" args=["flask@*",null]
+11 verbose parsed url { protocol: null,
+11 verbose parsed url   slashes: null,
+11 verbose parsed url   auth: null,
+11 verbose parsed url   host: null,
+11 verbose parsed url   port: null,
+11 verbose parsed url   hostname: null,
+11 verbose parsed url   hash: null,
+11 verbose parsed url   search: null,
+11 verbose parsed url   query: null,
+11 verbose parsed url   pathname: 'flask@*',
+11 verbose parsed url   path: 'flask@*',
+11 verbose parsed url   href: 'flask@*' }
+12 verbose cache add name="flask" spec="*" args=["flask","*"]
+13 verbose parsed url { protocol: null,
+13 verbose parsed url   slashes: null,
+13 verbose parsed url   auth: null,
+13 verbose parsed url   host: null,
+13 verbose parsed url   port: null,
+13 verbose parsed url   hostname: null,
+13 verbose parsed url   hash: null,
+13 verbose parsed url   search: null,
+13 verbose parsed url   query: null,
+13 verbose parsed url   pathname: '*',
+13 verbose parsed url   path: '*',
+13 verbose parsed url   href: '*' }
+14 verbose addNamed [ 'flask', '*' ]
+15 verbose addNamed [ null, '*' ]
+16 verbose already installed skipping mongodb@* /home/g_wiechert/apps4halifax
+17 verbose already installed skipping eve@* /home/g_wiechert/apps4halifax
+18 verbose already installed skipping togeojson@* /home/g_wiechert/apps4halifax
+19 silly lockFile a69c9d5c-flask flask@*
+20 verbose lock flask@* /home/g_wiechert/.npm/a69c9d5c-flask.lock
+21 silly addNameRange { name: 'flask', range: '*', hasData: false }
+22 verbose url raw flask
+23 verbose url resolving [ 'https://registry.npmjs.org/', './flask' ]
+24 verbose url resolved https://registry.npmjs.org/flask
+25 info trying registry request attempt 1 at 08:46:51
+26 http GET https://registry.npmjs.org/flask
+27 http 404 https://registry.npmjs.org/flask
+28 silly registry.get cb [ 404,
+28 silly registry.get   { server: 'CouchDB/1.3.1 (Erlang OTP/R15B03)',
+28 silly registry.get     date: 'Sat, 14 Sep 2013 11:46:50 GMT',
+28 silly registry.get     'content-type': 'application/json',
+28 silly registry.get     'content-length': '52',
+28 silly registry.get     'cache-control': 'must-revalidate' } ]
+29 silly lockFile a69c9d5c-flask flask@*
+30 silly lockFile a69c9d5c-flask flask@*
+31 error 404 'flask' is not in the npm registry.
+31 error 404 You should bug the author to publish it
+31 error 404
+31 error 404 Note that you can also install from a
+31 error 404 tarball, folder, or http url, or git url.
+32 error System Linux 3.8.0-29-generic
+33 error command "/usr/local/bin/node" "/usr/local/bin/npm" "install"
+34 error cwd /home/g_wiechert/apps4halifax
+35 error node -v v0.10.18
+36 error npm -v 1.3.8
+37 error code E404
+38 verbose exit [ 1, true ]
