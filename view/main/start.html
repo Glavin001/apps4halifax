@@ -14,14 +14,51 @@
 	<script src="http://maps.google.com/maps/api/js?sensor=false"></script>
 	<script>
 		function checkNewThings(){
-			
+			hfx.geoNear(usersPosition[0],usersPosition[1],50,function(data){
+				var items = data["_items"];
+				for (var i = items.length - 1; i >= 0; i--) {
+					var meta = items[i]["meta"];
+					var item_position = [items[i]["latitude"],items[i]["longitude"]];
+					
+					var myIcon = L.icon({
+					    iconUrl: 'images/bus.png',
+					});
+					L.marker(item_position, {icon: myIcon}).addTo(map)
+						.bindPopup("<b>"+meta["LOCATION"]+"</b><br/><br/>").openPopup();
+
+				};
+			},{'type':'bus_stops'});
+
+
+			hfx.geoNear(usersPosition[0],usersPosition[1],0.2,function(data){
+				var items = data["_items"];
+				for (var i = items.length - 1; i >= 0; i--) {
+					var meta = items[i]["meta"];
+					var item_position = [items[i]["latitude"],items[i]["longitude"]];
+					console.log(meta);
+					var myIcon = L.icon({
+					    iconUrl: 'images/bus.png',
+					});
+					L.marker(item_position, {icon: myIcon}).addTo(map)
+						.bindPopup("<b>"+meta["LOCATION"]+"</b><br/><br/>").openPopup();
+
+				};
+			},{'type':'trails'});
 		}
 		$(document).ready(function() {
 			$( ".comment_box" ).each(function (i) {
 				$(this).height($(this).parent().height()-$(this).next(".current_comment").height()-25);
-	      		setInterval ( "checkNewThings()", 1000 );
+	      		//setInterval ( "checkNewThings()", 10000 );
+	      		checkNewThings();
 
 	      	});
+
+
+		   $("#wrapper").bind("mousewheel", function (event,delta,nbr) 
+		   {
+		        event;
+		   }
+
 		});
 	</script>
 
@@ -33,7 +70,8 @@
 			}
 			
 			function pressRate(element){
-				alert('test');
+				$(".ratepanel").show();
+				$(".current_comment").hide();
 			}
 
 			function fail(error) {
@@ -51,7 +89,7 @@
 </head>
 <body>
 
-
+	<div id="wrapper">
 	<div id="main">
 
 <div data-role="page">
@@ -61,16 +99,22 @@
 
  	<div data-role="panel" data-display="overlay" id="your-location-panel" data-theme="b">
 
-		<div class="ratepanel" style="display:hidden">
+		<div class="ratepanel" style="display:none">
  			<div data-role="fieldcontain">
 				<label for="slider">Service</label><br/>
-		 		<input type="range" name="slider" id="slider" value="0" min="0" max="100"  />
+					<div data-role="fieldcontain">
+					    <fieldset data-role="controlgroup">
+					    	<legend>Like this location:</legend>
+					         	<input type="radio" name="radio-choice-1" id="radio-choice-1" value="choice-1" checked="checked" />
+					         	<label for="radio-choice-1">Yes</label>
+
+					         	<input type="radio" name="radio-choice-1" id="radio-choice-2" value="choice-2"  />
+					         	<label for="radio-choice-2">No</label>
+
+					    </fieldset>
+					</div>
 			</div>
- 			<div data-role="fieldcontain">
-				<label for="slider">Accessability</label><br/>
-		 		<input type="range" name="slider" id="slider" value="0" min="0" max="100"  />
-			</div>
- 			Service: <br/> 
+ 			<br/> 
  		</div>
 
 		<div class="comment_box" style="height:390px;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
