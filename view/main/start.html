@@ -12,44 +12,11 @@
 	<!--[if lte IE 8]><link rel="stylesheet" href="../dist/leaflet.ie.css" /><![endif]-->
 	<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
 	<script src="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.js"></script>
+	<script>
 
-
-	<script type="text/javascript">
-		function showMap(){
-			$("#mainView").show("slow");
-			$("#main").hide("slow");
-		}
 	</script>
 </head>
 <body>
-
-	<div id="login">
-
-<div data-role="page">
-
-	<div data-role="content">
-		HAHAHAH
-		Dashboard You are in . Trending Locations
-		<p><a href="#" onclick="showMap()">WOO</a></p>		
-	</div><!-- /content -->
-
-	<div data-role="header" data-id="foo1" data-position="fixed">
-		<div data-role="navbar">
-			<ul>
-				<li><a href="b.html">Your Location</a></li>
-				<li><a href="a.html">Trending</a></li>
-				<li><a href="b.html">Things Happening Nearby</a></li>
-				<li><a href="b.html">Challenges (Points: 1) <img width=16 height=16 src="../dist/images/main/settings.png" style="margin-left:5px;position:fixed" /></a></li>
-			</ul>
-		</div><!-- /navbar -->
-	</div><!-- /footer -->
-
-</div><!-- /page -->
-
-		<a href="#" onclick="showMap()">Click here</a>
-
-
-	</div>
 
 
 	<div id="main">
@@ -57,7 +24,6 @@
 <div data-role="page">
 
 	<div data-role="content">
-		<div id="preview" style="width: 100%; height: 400px"></div>
 		Dashboard You are in . Trending Locations
 		<p><a href="#" onclick="showMap()">WOO</a></p>		
 	</div><!-- /content -->
@@ -80,8 +46,8 @@
 
 	</div>
 
-
 		<div id="map" style="width: 100%; height: 100%"></div>
+
 	</div>
 
 	<script src="../dist/leaflet.js"></script>
@@ -116,12 +82,11 @@
 		function onMapClick(e) {
 			popup
 				.setLatLng(e.latlng)
-				.setContent("You clicked the map at " + e.latlng.toString())
+				.setContent("WHatza going on here " + e.latlng.toString())
 				.openOn(map);
 		}
 
 		map.on('click', onMapClick);
-		$("#mainView").hide();
 	</script>
 </body>
 </html>
