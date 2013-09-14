@@ -16,43 +16,22 @@ ITEM_METHODS = ['GET', 'PATCH', 'DELETE']
 CACHE_CONTROL = 'max-age=20'
 CACHE_EXPIRES = 20
 
-# Our API will expose two resources (MongoDB collections): 
-Bus_Stops = {
-    # if 'item_title' is not provided Eve will just strip the final
-    # 's' from resource name, and use it as the item_title.
-    #'item_title': 'Bus_Stops',
-
-    # We choose to override global cache-control directives for this resource.
-    'cache_control': 'max-age=10,must-revalidate',
-    'cache_expires': 10,
-
-    'schema': {
-        'title': {
-            'type': 'string',
-            'required': True,
-        },
-        'description': {
-            'type': 'string',
-        }
-    }
-}
 
 # The DOMAIN dict explains which resources will be available and how they will
 # be accessible to the API consumer.
 DOMAIN = {
-    'Bus_Stops': Bus_Stops,
-    'Crime': { 
-     	
-'schema': {
-'title': { 
-'type' : 'string'
-} ,
-'description': {
-'type':'string'
-}
-}
 
-     }
+    'Halifax' : {
+        
+        'schema': {
+            'type':'string',
+            'longitude':'float',
+            'latitude':'float',
+            'meta':'dict',
+            'loc':'dict'
+        }
+    }
+
 }
 
 # Let's just use the local mongod instance. Edit as needed.
