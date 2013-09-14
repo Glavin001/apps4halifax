@@ -24,11 +24,11 @@ DOMAIN = {
     'Halifax' : {
         
         'schema': {
-            'type':'string',
-            'longitude':'float',
-            'latitude':'float',
-            'meta':'dict',
-            'loc':'dict'
+            'type': { type: 'string', required: True },
+            'longitude': { type: 'float', required: True },
+            'latitude': { type: 'float', required: True },
+            'meta': { type: 'dict' },
+            'loc': { type: 'dict' }
         }
     }
 
