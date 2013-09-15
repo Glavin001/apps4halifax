@@ -23,7 +23,7 @@ DOMAIN = {
     'Halifax' : {
         
         'schema': {
-        	'_SocrataId': {'type': 'string', 'unique': True, 'required': True },
+        	'_SocrataID': {'type': 'string', 'unique': True, 'required': True },
             'type': { 'type': 'string', 'required': True },
             'longitude': { 'type': 'float', 'required': True },
             'latitude': { 'type': 'float', 'required': True },
