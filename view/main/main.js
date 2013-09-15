@@ -82,7 +82,7 @@ $(".leaflet-popup-pane").delegate(".leaflet-popup", "click", function( event ) {
   	//$parent.closeOn(map);
   	console.log(gotime);
   	var $header = $("<p>GoTime for Stop #"+gotime+"</p>");
-  	var $body = $("<iframe src=\"http://eservices.halifax.ca/GoTime/departures_small.jsf?goTime="+gotime+"\"></iframe>");
+  	var $body = $("<iframe width=100% src=\"http://eservices.halifax.ca/GoTime/departures_small.jsf?goTime="+gotime+"\"></iframe>");
   	renderWiki($header, $body)
 	popup.closePopup();
 	$wikiModal.modal('show');
