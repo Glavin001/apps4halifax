@@ -30,6 +30,16 @@ DOMAIN = {
             'meta': { 'type': 'dict' },
             'loc': { 'type': 'dict' }
         }
+    },
+
+    'Comments': {
+    	'schema': {
+    		'username': { 'type': 'string', 'required': True },
+            'type': { 'type': 'string', 'required': True },
+            'longitude': { 'type': 'float', 'required': True },
+            'latitude': { 'type': 'float', 'required': True },
+            'message': { 'type': 'float', 'required': True },
+        }
     }
 }
 
