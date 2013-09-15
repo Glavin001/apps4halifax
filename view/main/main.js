@@ -173,6 +173,7 @@ function moveMap(){
 
 }
 
+// Fix found here: https://github.com/Leaflet/Leaflet/issues/1041
 function preventGhostClick(evt) {
     var lastEventTimestamp = window.lastEventTimestamp || 1;
     var currentEventTimestamp = new Date().getTime();
