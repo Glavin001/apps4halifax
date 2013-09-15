@@ -12,99 +12,7 @@
 	<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
 	<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
 	<script src="http://maps.google.com/maps/api/js?sensor=false"></script>
-	<script>
-		function checkNewThings(){
-			hfx.geoNear(usersPosition[0],usersPosition[1],50,function(data){
-				var items = data["_items"];
-				for (var i = items.length - 1; i >= 0; i--) {
-					var meta = items[i]["meta"];
-					var item_position = [items[i]["latitude"],items[i]["longitude"]];
-					
-					var myIcon = L.icon({
-					    iconUrl: 'images/bus.png',
-					});
-					L.marker(item_position, {icon: myIcon}).addTo(map)
-						.bindPopup("<b>"+meta["LOCATION"]+"</b><br/><br/>").openPopup();
-
-				};
-			},{'type':'bus_stops'});
-
-
-			hfx.geoNear(usersPosition[0],usersPosition[1],50,function(data){
-				var items = data["_items"];
-				console.log(data);
-				for (var i = items.length - 1; i >= 0; i--) {
-					var meta = items[i]["meta"];
-					var item_position = [items[i]["latitude"],items[i]["longitude"]];
-					
-					var myIcon = L.icon({
-					    iconUrl: 'images/trail.png',
-					});
-					L.marker(item_position, {icon: myIcon}).addTo(map)
-						.bindPopup("<b>"+meta["LOCATION"]+"</b><br/><br/>").openPopup();
-
-					var lats = [];
-					for (var j = items[i]["loc"]["coordinates"].length - 1; j >= 0; j--) {
-						lats.push(new L.LatLng(items[i]["loc"]["coordinates"][j][0], items[i]["loc"]["coordinates"][j][1]));
-					};
-					var polyline = L.polyline(lats, {color: 'red',weight: 3, opacity: 1, smoothFactor: 1}).addTo(map);
-				};
-			},{'type':'zoning_boundaries'});
-
-
-			hfx.geoNear(usersPosition[0],usersPosition[1],100,function(data){
-				console.log(data);
-				var items = data["_items"];
-				console.log(data);
-				for (var i = items.length - 1; i >= 0; i--) {
-					var meta = items[i]["meta"];
-					var item_position = [items[i]["latitude"],items[i]["longitude"]];
-					
-					var myIcon = L.icon({
-					    iconUrl: 'images/trail.png',
-					});
-					L.marker(item_position, {icon: myIcon}).addTo(map)
-						.bindPopup("<b>"+meta["LOCATION"]+"</b><br/><br/>").openPopup();
-
-					var lats = [];
-					for (var j = items[i]["loc"]["coordinates"].length - 1; j >= 0; j--) {
-						lats.push(new L.LatLng(items[i]["loc"]["coordinates"][j][0], items[i]["loc"]["coordinates"][j][1]));
-					};
-					var polyline = L.polyline(lats, {color: 'red',weight: 3, opacity: 1, smoothFactor: 1}).addTo(map);
-				};
-			},{'type':'park_recreation_features'});
-
-		}
-		$(document).ready(function() {
-			$( ".comment_box" ).each(function (i) {
-				$(this).height($(this).parent().height()-$(this).next(".current_comment").height()-25);
-	      		//setInterval ( "checkNewThings()", 10000 );
-	      		checkNewThings();
-	      	});
-		});
-	</script>
-
-	<script>
-		if ( navigator.geolocation ) {
-			function success(pos) {
-				// Location found, show map with these coordinates
-				console.log([pos.coords.latitude, pos.coords.longitude]);
-			}
-			
-			function pressRate(element){
-				$(".ratepanel").show();
-				$(".current_comment").hide();
-			}
-
-			function fail(error) {
-				
-			}
-			
-			// Find the users current position.  Cache the location for 5 minutes, timeout after 6 seconds
-			navigator.geolocation.getCurrentPosition(success, fail, {maximumAge: 500000, enableHighAccuracy:true, timeout: 6000});
-		}
-	</script>
-
+	
 	<!-- RESTful API -->
 	<script src="../dist/hfx.js"></script>
 
@@ -233,8 +141,7 @@
 			maxZoom: 18,
 			attribution: ''
 		}).addTo(map);
-
-
+		/*
 		L.marker(usersPosition).addTo(map)
 			.bindPopup("Recent Updates<br/>More..").openPopup();
 
@@ -243,21 +150,32 @@
 			fillColor: '#f03',
 			fillOpacity: 0.5
 		}).addTo(map).bindPopup("I am a circle.");
-
+	*/
+		var markers = { };
 		var popup = L.popup();
-
+		var popupContents = "";
+		var radius = 0.01;
 		function onMapClick(e) {
 			
 			console.log('Mapclick', e.latlng);
+			var lat = e.latlng.lat, lng = e.latlng.lng
+			hfx.geoNear(lat, lng, radius, function(data) { 
 
-			hfx.geoNear(e.latlng.lat, e.latlng.lng, 0.001, function(data) { 
-
-				console.log(data); 
-
-			popup
-				.setLatLng(e.latlng)
-				.setContent(JSON.stringify(data) )
-				.openOn(map);
+				if (data._items.length <= 0) {
+					popupContents = "Loading data";
+					console.log('Loading data', data); 
+					radius *= 2.0;
+					onMapClick(e); // Retry
+				} else {
+					radius = 0.01;
+					popupContents = "We have data!"; // JSON.stringify(data._items);
+					console.log('We have data!', data._items);
+				}
+				var html = '<div class="popup-contents">'+popupContents+'</div>';
+				popup
+					.setLatLng(e.latlng)
+					.setContent(html)
+					.openOn(map);
 
 			});
 
@@ -270,6 +188,99 @@
 
 		map.on('click', onMapClick);
 		map.on('moveend', moveMap);
+	</script>
+
+	<script>
+		function checkNewThings(){
+			hfx.geoNear(usersPosition[0],usersPosition[1],50,function(data){
+				var items = data["_items"];
+				for (var i = items.length - 1; i >= 0; i--) {
+					var meta = items[i]["meta"];
+					var item_position = [items[i]["latitude"],items[i]["longitude"]];
+					
+					var myIcon = L.icon({
+					    iconUrl: 'images/bus.png',
+					});
+					L.marker(item_position, {icon: myIcon}).addTo(map)
+						.bindPopup("<b>"+meta["LOCATION"]+"</b><br/><br/>").openPopup();
+
+				};
+			},{'type':'bus_stops'});
+
+
+			hfx.geoNear(usersPosition[0],usersPosition[1],50,function(data){
+				var items = data["_items"];
+				console.log(data);
+				for (var i = items.length - 1; i >= 0; i--) {
+					var meta = items[i]["meta"];
+					var item_position = [items[i]["latitude"],items[i]["longitude"]];
+					
+					var myIcon = L.icon({
+					    iconUrl: 'images/trail.png',
+					});
+					L.marker(item_position, {icon: myIcon}).addTo(map)
+						.bindPopup("<b>"+meta["LOCATION"]+"</b><br/><br/>").openPopup();
+
+					var lats = [];
+					for (var j = items[i]["loc"]["coordinates"].length - 1; j >= 0; j--) {
+						lats.push(new L.LatLng(items[i]["loc"]["coordinates"][j][0], items[i]["loc"]["coordinates"][j][1]));
+					};
+					var polyline = L.polyline(lats, {color: 'red',weight: 3, opacity: 1, smoothFactor: 1}).addTo(map);
+				};
+			},{'type':'zoning_boundaries'});
+
+
+			hfx.geoNear(usersPosition[0],usersPosition[1],100,function(data){
+				console.log(data);
+				var items = data["_items"];
+				console.log(data);
+				for (var i = items.length - 1; i >= 0; i--) {
+					var meta = items[i]["meta"];
+					var item_position = [items[i]["latitude"],items[i]["longitude"]];
+					
+					var myIcon = L.icon({
+					    iconUrl: 'images/trail.png',
+					});
+					L.marker(item_position, {icon: myIcon}).addTo(map)
+						.bindPopup("<b>"+meta["LOCATION"]+"</b><br/><br/>").openPopup();
+
+					var lats = [];
+					for (var j = items[i]["loc"]["coordinates"].length - 1; j >= 0; j--) {
+						lats.push(new L.LatLng(items[i]["loc"]["coordinates"][j][0], items[i]["loc"]["coordinates"][j][1]));
+					};
+					var polyline = L.polyline(lats, {color: 'red',weight: 3, opacity: 1, smoothFactor: 1}).addTo(map);
+				};
+			},{'type':'park_recreation_features'});
+
+		}
+		$(document).ready(function() {
+			$( ".comment_box" ).each(function (i) {
+				$(this).height($(this).parent().height()-$(this).next(".current_comment").height()-25);
+	      		//setInterval ( "checkNewThings()", 10000 );
+	      		checkNewThings();
+	      	});
+		});
+	</script>
+
+	<script>
+		if ( navigator.geolocation ) {
+			function success(pos) {
+				// Location found, show map with these coordinates
+				console.log([pos.coords.latitude, pos.coords.longitude]);
+			}
+			
+			function pressRate(element){
+				$(".ratepanel").show();
+				$(".current_comment").hide();
+			}
+
+			function fail(error) {
+				
+			}
+			
+			// Find the users current position.  Cache the location for 5 minutes, timeout after 6 seconds
+			navigator.geolocation.getCurrentPosition(success, fail, {maximumAge: 500000, enableHighAccuracy:true, timeout: 6000});
+		}
 	</script>
 
 
