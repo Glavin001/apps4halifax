@@ -1,7 +1,7 @@
 usersPosition = [44.64844, -63.57582];
 
 console.log(usersPosition);
-var map = L.map('map').setView(usersPosition, 8);
+var map = L.map('map').setView(usersPosition, 15);
 
 L.tileLayer('http://a.tiles.mapbox.com/v3/oogalaboogala.map-eh6b4ikh/{z}/{x}/{y}.png', {
 	maxZoom: 18,
@@ -86,6 +86,7 @@ var radius = 0.0001;
 var $wikiModal = $(".wiki-modal"), 
 $wikiModalTitle = $(".modal-title", $wikiModal), 
 $wikiModalBody = $('.modal-body', $wikiModal);
+$wikiModalFooter = $('.modal-footer', $wikiModal);
 
 $(".leaflet-popup-pane").delegate(".leaflet-popup", "click", function( event ) {
   console.log( event );
@@ -93,11 +94,25 @@ $(".leaflet-popup-pane").delegate(".leaflet-popup", "click", function( event ) {
   if ( $target.hasClass('more-info-btn') ) {
   	console.log($parent);
   	//$parent.closeOn(map);
-  	var $header = $("<p>Info Near Here</p>");
-  	var $body = $("<div>Test</div>");
+  	var lng = $target.attr('data-lng'), lat = $target.attr('data-lat'), radius= $target.attr('data-radius');
+  	var $header = $("<p>Info Around Location <small>("+lng+", "+lat+")</small></p>");
+  	var $body = $("<div class=\"info-box\">Loading data from Gocrata.</div>");
   	renderWiki($header, $body)
 	popup.closePopup();
 	$wikiModal.modal('show');
+	hfx.geoNear(parseFloat(lat), parseFloat(lng), radius, function(data) { 
+		var items = data["_items"];
+		$body = $("<div style=\"max-height: 500px;overflow-y: scroll;\"/>");
+		for (var i = items.length - 1; i >= 0; i--) {
+			console.log(items[i]);
+			var $table = $(metaJsonToTable(items[i].meta));
+			console.log($table.html());
+			var $row = $("<div/>").append( $("<h3/>").html(items[i].type) ).append( $table );
+			$body.append( $("<div/>").append($row) );
+		}
+		console.log($body);
+		renderWiki($header, $body);	
+	});
   }
   else if ( $target.hasClass('gotime-info-btn') ) {
   	console.log($parent);
@@ -112,9 +127,33 @@ $(".leaflet-popup-pane").delegate(".leaflet-popup", "click", function( event ) {
   }
 });
 
-function renderWiki($header, $body) {
-	$wikiModalTitle.html('').append($header);
-	$wikiModalBody.html('').append($body);
+function renderWiki($header, $body, $footer) {
+	if ($header) {
+		$wikiModalTitle.html('').append($header);
+	}
+	if ($body) {
+		$wikiModalBody.html('').append($body);
+	}
+	if ($footer) {
+		$wikiModalFooter.html('').append($footer);
+	}
+}
+
+function metaJsonToTable(json) {
+	console.log('metaJsonToTable', json);
+	var table_obj = $('<table/>');
+	for (var property in json) {
+    	if (json.hasOwnProperty(property)) {
+        	// do stuff
+        	 var table_row = $('<tr/>', {class: property});
+	         var table_cell = $('<td/>', {html: (property + ":" + json[property]) });
+	         table_row.append(table_cell);
+	         table_obj.append(table_row);      
+	         console.log(property, table_row.html());  	
+    	}
+	}
+	console.log(table_obj.html());
+	return table_obj;
 }
 
 function onMapClick(e) {
@@ -148,10 +187,10 @@ function onMapClick(e) {
 			*/
 			console.log(radius);
 		} else {
-			radius = 0.01;
-			popupContents = "We have data!"; // JSON.stringify(data._items);
-			console.log('We have data!', data._items);
-
+			//popupContents = data._items[0] && metaJsonToTable(data._items[0]);
+			//console.log('We have data!', data._items);
+			//console.log(popupContents);
+			//renderWiki($('Title'),$(popupContents));
 			var allTypes = { };
 			for (var i =0, len=data._items.length; i<len; i++) {
 				var node = data._items[i];
@@ -163,8 +202,9 @@ function onMapClick(e) {
 			popupContents = "<div class=\"popop-contents\">";
 //			popupContents += "<strong>We have collected more than "+Object.keys(allTypes).length+" types of data.</strong><br>";
 			popupContents += "<strong>We have collected "+data._items.length+" result"+(data._items.length>1?"s":"")+".</strong><br>";
-			popupContents += '<button class="btn btn-primary more-info-btn">Click here for more info!</a>'
+			popupContents += '<button class="btn btn-primary more-info-btn" data-lng="'+lng+'" data-lat="'+lat+'" data-radius="'+radius+'">Click here for more info!</a>'
 			popupContents += "</div>";
+			radius = 0.01;
 		}
 		var html = '<div class="popup-contents">'+popupContents+'</div>';
 		/*
