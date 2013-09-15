@@ -135,8 +135,12 @@ function onMapClick(e) {
 		if (data._items.length <= 0) {
 			popupContents = "Loading data";
 			console.log('Loading data', data); 
-			radius *= 2.0;
-			onMapClick(e); // Retry
+			radius *= 3.0;
+			if (radius < 1) {
+				onMapClick(e); // Retry
+			} else {
+				popup.setPopupContent("No data near here!");	
+			}
 			/*
 			popup
 				.setLatLng(e.latlng)
