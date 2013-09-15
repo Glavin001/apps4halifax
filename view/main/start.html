@@ -271,6 +271,25 @@
 		map.on('click', onMapClick);
 		map.on('moveend', moveMap);
 	</script>
+	<!-- clay.io (dawson deterrent) -->
+	<script type="text/javascript">
+	var Clay = Clay || {};
+	Clay.gameKey = "wikifax";
+	Clay.readyFunctions = [];
+	Clay.ready = function( fn ) {
+	    Clay.readyFunctions.push( fn );
+	};
+	( function() {
+	    var clay = document.createElement("script"); clay.async = true;
+	    clay.src = ( "https:" == document.location.protocol ? "https://" : "http://" ) + "clay.io/api/api.js"; 
+	    var tag = document.getElementsByTagName("script")[0]; tag.parentNode.insertBefore(clay, tag);
+	} )();
+	var requireClay = false; // If you pass true for 2nd param, it will make sure they've logged into clay (not anonymous)
+	Clay.Player.requireLogin( function( response ) {
+    // Function that is called on successful login, or failed login
+    // response is an object { success: boolean, error: "truthy" }
+	}, requireClay );
+	</script>
 
 
 </body>
