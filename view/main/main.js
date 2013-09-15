@@ -76,6 +76,17 @@ $(".leaflet-popup-pane").delegate(".leaflet-popup", "click", function( event ) {
 	popup.closePopup();
 	$wikiModal.modal('show');
   }
+  else if ( $target.hasClass('gotime-info-btn') ) {
+  	console.log($parent);
+  	var gotime = $target.attr("data-gotime");
+  	//$parent.closeOn(map);
+  	console.log(gotime);
+  	var $header = $("<p>GoTime for Stop #"+gotime+"</p>");
+  	var $body = $("<iframe src=\"http://eservices.halifax.ca/GoTime/departures_small.jsf?goTime="+gotime+"\"></iframe>");
+  	renderWiki($header, $body)
+	popup.closePopup();
+	$wikiModal.modal('show');
+  }
 });
 
 function renderWiki($header, $body) {
@@ -173,7 +184,7 @@ function renderNode(node) {
 			    iconUrl: 'images/svg/bus-24.svg',
 			});
 			var marker = L.marker(item_position, {icon: myIcon, riseOnHover: true }).addTo(map)
-				.bindPopup("<h1>"+meta["LOCATION"]+"</h1><br/><h2>GoTime: <a href=\"http://eservices.halifax.ca/GoTime/departures_small.jsf?goTime="+meta["GOTIME"]+"\">480-"+meta["GOTIME"]+"</a></h2><br/>").openPopup().closePopup();
+				.bindPopup("<h1>"+meta["LOCATION"]+"</h1><br/><h2>GoTime: <a class=\"gotime-info-btn\" data-gotime=\""+meta["GOTIME"]+"\">480-"+meta["GOTIME"]+"</a></h2><br/>").openPopup().closePopup();
 			markers[node._id] = { 'node': node, 'marker': marker };
 			break;
 		}
