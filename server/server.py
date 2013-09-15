@@ -1,12 +1,3 @@
-'''
-from flask import Flask
-from flask.ext.sqlalchemy import SQLAlchemy
-
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/glavin'
-db = SQLAlchemy(app)
-'''
-
 from flask import request
 from eve import Eve
 app = Eve()
@@ -23,6 +14,25 @@ def after(response):
     """
     print('and here we have the response object instead:', response)
     return response
+
+@app.route("/gotime/<gotime>")
+def hello(gotime):
+        import urllib2
+        response = urllib2.urlopen('http://eservices.halifax.ca/GoTime/departures_small.jsf?goTime=' + gotime)
+        print response.info()
+        html = str(response.read())
+        a = html.split('<table id=\"avl_main_form:departure_table\"' , 1)[1]
+        a = "<table id=\"avl_main_form:departure_table\"" + a
+        a = a.split('</table>', 1)[0]
+        a = a +'</table>'
+        a = '<html><head></head><body>' + a + '</body></html>'
+        response.close()  # best practice to close the file
+        return a
+
+#@app.route("/")
+#def index():
+#        return "Hey, you need to specify a stop number!"
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
