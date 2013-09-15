@@ -35,10 +35,10 @@ DOMAIN = {
     'Comments': {
     	'schema': {
     		'username': { 'type': 'string', 'required': True },
-            'type': { 'type': 'string', 'required': True },
+            'type': { 'type': 'string', 'required': False },
             'longitude': { 'type': 'float', 'required': True },
             'latitude': { 'type': 'float', 'required': True },
-            'message': { 'type': 'float', 'required': True },
+            'message': { 'type': 'string', 'required': True },
         }
     }
 }
