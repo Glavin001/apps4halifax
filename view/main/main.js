@@ -197,6 +197,7 @@ function renderNode(node) {
 	}
 	var meta = node["meta"];
 	var item_position = [node["latitude"], node["longitude"]];
+	console.log(node.type);
 	switch (node.type) {
 		case 'bus_stops': {
 			var myIcon = L.icon({
@@ -298,7 +299,9 @@ function renderNode(node) {
 			    iconUrl: 'images/svg/building-24.svg',
 			});
 			var marker = L.marker(item_position, {icon: myIcon, riseOnHover: true }).addTo(map)
-				.bindPopup("<p>"+JSON.stringify(meta)+"</p><br/>",{autoPan:false});
+				.bindPopup("<h1>"+meta["LABEL"]+"</h1><br/>",{autoPan:false});
+
+
 			markers[node._id] = { 'node': node, 'marker': marker };
 			break;
 		}
