@@ -121,7 +121,7 @@ $(".leaflet-popup-pane").delegate(".leaflet-popup", "click", function( event ) {
   	//$parent.closeOn(map);
   	var $header = $("<p>Info Near Here</p>");
   	var $body = $("<div>Test</div>");
-  	renderWiki($header, $body)
+  	renderWiki($header, $body);
 	popup.closePopup();
 	$wikiModal.modal('show');
   }
@@ -130,19 +130,35 @@ $(".leaflet-popup-pane").delegate(".leaflet-popup", "click", function( event ) {
   	var gotime = $target.attr("data-gotime");
   	//$parent.closeOn(map);
   	console.log(gotime);
-  	var $header = $("<p>GoTime for Stop #"+gotime+"</p>");
-  	var $body = $("<iframe width=100% height=100% src=\"http://eservices.halifax.ca/GoTime/departures_small.jsf?goTime="+gotime+"\"></iframe>");
-  	renderWiki($header, $body)
+  	
 	popup.closePopup();
 	$wikiModal.modal('show');
-  }
+  	
+  	$.ajax({
+		type:"GET",
+		url:"http://140.184.132.237:5000/gotime/"+gotime,
+		success: function(data) {
+			console.log(data);
+  	var $header = $("<p>GoTime for Stop #"+gotime+"</p>");
+  	var $body = $(data);
+  	
+  	renderWiki($header, $body)
+			
+		}
+	});
+   }
 });
 
 function renderWiki($header, $body) {
 	$wikiModalTitle.html('').append($header);
 	$wikiModalBody.html('').append($body);
 }
-
+function changeClass (elementID, newClass) {
+	var element = document.getElementById(elementID);
+	
+	element.setAttribute("class", newClass); //For Most Browsers
+	element.setAttribute("className", newClass); //For IE; harmless to other browsers.
+}
 function onMapClick(e) {
 	
 	console.log('Mapclick', e.latlng);
