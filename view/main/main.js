@@ -5,6 +5,7 @@ var map = L.map('map').setView(usersPosition, 13);
 
 L.tileLayer('http://a.tiles.mapbox.com/v3/oogalaboogala.map-eh6b4ikh/{z}/{x}/{y}.png', {
 	maxZoom: 18,
+	zoom: 13,
 	attribution: ''
 }).addTo(map);
 new OSMBuildings(map).loadData(); // OSM Buildings
@@ -60,9 +61,9 @@ var poiMarker = L.marker(map.getCenter(), { icon: L.icon({
 			    popupAnchor: [10, 10],
 			}) 
 }).addTo(map);
-var popup = poiMarker.bindPopup("").openPopup().closePopup(); /// L.popup();
+var popup = poiMarker.bindPopup("", {autoPan: false})//.openPopup().closePopup(); /// L.popup();
 var popupContents = "";
-var radius = 0.001;
+var radius = 0.0001;
 var $wikiModal = $(".wiki-modal"), 
 $wikiModalTitle = $(".modal-title", $wikiModal), 
 $wikiModalBody = $('.modal-body', $wikiModal);
@@ -169,6 +170,24 @@ function moveMap(){
 
 }
 
+function preventGhostClick(evt) {
+    var lastEventTimestamp = window.lastEventTimestamp || 1;
+    var currentEventTimestamp = new Date().getTime();
+    var msDifference = currentEventTimestamp - lastEventTimestamp;
+    if (msDifference < 20) {
+        console.log('We decided not to fire the mouse (event): ' + msDifference + '.');
+        evt.stopImmediatePropagation();
+        return false;
+    } 
+    window.lastEventTimestamp = currentEventTimestamp;    
+    return true;
+}
+
+L.Map.prototype._originalFireMouseEvent = L.Map.prototype._fireMouseEvent;
+L.Map.prototype._fireMouseEvent = function(evt) {
+    return preventGhostClick(evt) ? this._originalFireMouseEvent(evt) : null;
+}
+
 map.on('click', onMapClick);
 map.on('moveend', moveMap);
 
@@ -184,7 +203,7 @@ function renderNode(node) {
 			    iconUrl: 'images/svg/bus-24.svg',
 			});
 			var marker = L.marker(item_position, {icon: myIcon, riseOnHover: true }).addTo(map)
-				.bindPopup("<h1>"+meta["LOCATION"]+"</h1><br/><h2>GoTime: <a class=\"gotime-info-btn\" data-gotime=\""+meta["GOTIME"]+"\">480-"+meta["GOTIME"]+"</a></h2><br/>").openPopup().closePopup();
+				.bindPopup("<h1>"+meta["LOCATION"]+"</h1><br/><h2>GoTime: <a class=\"gotime-info-btn\" data-gotime=\""+meta["GOTIME"]+"\">480-"+meta["GOTIME"]+"</a></h2><br/>",{autoPan:false});
 			markers[node._id] = { 'node': node, 'marker': marker };
 			break;
 		}
@@ -194,7 +213,7 @@ function renderNode(node) {
 			});
 			console.log(node);
 			var marker = L.marker(item_position, {icon: myIcon}).addTo(map)
-				.bindPopup("<b>"+JSON.stringify(meta)+"</b><br/><br/>").openPopup().closePopup();
+				.bindPopup("<b>"+JSON.stringify(meta)+"</b><br/><br/>",{autoPan:false});
 			var lats = [];
 			for (var j = node["loc"]["coordinates"].length - 1; j >= 0; j--) {
 				lats.push(new L.LatLng(node["loc"]["coordinates"][j][0], node["loc"]["coordinates"][j][1]));
@@ -208,7 +227,7 @@ function renderNode(node) {
 			    iconUrl: 'images/trail.png',
 			});
 			var marker = L.marker(item_position, {icon: myIcon}).addTo(map)
-				.bindPopup("<b>"+JSON.stringify(meta)+"</b><br/><br/>").openPopup().closePopup();
+				.bindPopup("<b>"+JSON.stringify(meta)+"</b><br/><br/>",{autoPan:false});
 			var lats = [];
 			for (var j = node["loc"]["coordinates"].length - 1; j >= 0; j--) {
 				lats.push(new L.LatLng(node["loc"]["coordinates"][j][0], node["loc"]["coordinates"][j][1]));
@@ -222,7 +241,7 @@ function renderNode(node) {
 			    iconUrl: 'images/trail.png',
 			});
 			var marker = L.marker(item_position, {icon: myIcon}).addTo(map)
-				.bindPopup("<b>"+JSON.stringify(meta)+"</b><br/><br/>").openPopup().closePopup();
+				.bindPopup("<b>"+JSON.stringify(meta)+"</b><br/><br/>",{autoPan:false});
 			var lats = [];
 			for (var j = node["loc"]["coordinates"].length - 1; j >= 0; j--) {
 				lats.push(new L.LatLng(node["loc"]["coordinates"][j][0], node["loc"]["coordinates"][j][1]));
@@ -236,7 +255,7 @@ function renderNode(node) {
 			    iconUrl: 'images/trail.png',
 			});
 			var marker = L.marker(item_position, {icon: myIcon}).addTo(map)
-				.bindPopup("<b>"+JSON.stringify(meta)+"</b><br/><br/>").openPopup().closePopup();
+				.bindPopup("<b>"+JSON.stringify(meta)+"</b><br/><br/>",{autoPan:false});
 			var lats = [];
 			for (var j = node["loc"]["coordinates"].length - 1; j >= 0; j--) {
 				lats.push(new L.LatLng(node["loc"]["coordinates"][j][0], node["loc"]["coordinates"][j][1]));
@@ -250,7 +269,7 @@ function renderNode(node) {
 			    iconUrl: 'images/trail.png',
 			});
 			var marker = L.marker(item_position, {icon: myIcon}).addTo(map)
-				.bindPopup("<b>"+JSON.stringify(meta)+"</b><br/><br/>").openPopup().closePopup();
+				.bindPopup("<b>"+JSON.stringify(meta)+"</b><br/><br/>");
 			var lats = [];
 			for (var j = node["loc"]["coordinates"].length - 1; j >= 0; j--) {
 				lats.push(new L.LatLng(node["loc"]["coordinates"][j][0], node["loc"]["coordinates"][j][1]));
@@ -264,10 +283,11 @@ function renderNode(node) {
 			    iconUrl: 'images/trail.png',
 			});
 			var marker = L.marker(item_position, {icon: myIcon}).addTo(map)
-				.bindPopup("<b>"+JSON.stringify(meta)+"</b><br/><br/>").openPopup().closePopup();
+				.bindPopup("<b>"+JSON.stringify(meta)+"</b><br/><br/>",{autoPan:false});
 			var lats = [];
-			for (var j = node["loc"]["coordinates"].length - 1; j >= 0; j--) {
-				lats.push(new L.LatLng(node["loc"]["coordinates"][j][0], node["loc"]["coordinates"][j][1]));
+			var coordinates = node["loc"]["coordinates"];
+			for (var j = coordinates.length - 1; j >= 0; j--) {
+				lats.push(new L.LatLng(coordinates[j][0], coordinates[j][1]));
 			};
 			var polyline = L.polyline(lats, {color: 'brown',weight: 3, opacity: 1, smoothFactor: 1}).addTo(map);
 			markers[node._id] = { 'node': node, 'marker': marker };			
@@ -278,7 +298,7 @@ function renderNode(node) {
 			    iconUrl: 'images/svg/building-24.svg',
 			});
 			var marker = L.marker(item_position, {icon: myIcon, riseOnHover: true }).addTo(map)
-				.bindPopup("<p>"+JSON.stringify(meta)+"</p><br/>").openPopup().closePopup();
+				.bindPopup("<p>"+JSON.stringify(meta)+"</p><br/>",{autoPan:false});
 			markers[node._id] = { 'node': node, 'marker': marker };
 			break;
 		}
