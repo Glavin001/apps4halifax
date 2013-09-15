@@ -23,12 +23,38 @@ return $.ajax({
 	type: "GET",
 	url: 'http://140.184.132.237:5000/api/Comments/',
 	data: { 'where': JSON.stringify(query) },
+	dataType: "json",
 	success: function(data) {
 		return callback && callback(data);
 	}
 	});
 };
 
+
+function commentHere(){
+	var comment = { 'username':Clay.player.data.username, 'type': '', 'longitude':usersPosition[0], 'latitude':usersPosition[1], 'message': $("#your-location-panel").find("textarea").val() };
+	$.ajax({
+		type:"POST",
+		url:"http://140.184.132.237:5000/api/Comments/",
+		data: {'comment':JSON.stringify(comment)},
+		success: function(data) {
+			console.log('dsadasdsa');
+			$("#real_comments").append("<h2>"+Clay.player.data.username+": "+$("#your-location-panel").find("textarea").val()+"</br></h2>");
+			$("#your-location-panel").find("textarea").val("");
+		}
+	});
+}
+
+function openPanel(){
+		$("#real_comments").html("Loading Comments");
+		hfx.commentsNear(usersPosition[0], usersPosition[1], 10000, function(data) {
+			$("#real_comments").html("");
+			for (var i = data["_items"].length - 1; i >= 0; i--) {
+				$("#real_comments").append("<h2>"+data["_items"][i]["username"]+": "+data["_items"][i]["message"]+"</br></h2>");
+			};
+			 
+		});
+}
 
 function getLocation()
   {
