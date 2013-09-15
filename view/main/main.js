@@ -173,7 +173,7 @@ function renderNode(node) {
 			    iconUrl: 'images/svg/bus-24.svg',
 			});
 			var marker = L.marker(item_position, {icon: myIcon, riseOnHover: true }).addTo(map)
-				.bindPopup("<h1>"+meta["LOCATION"]+"</h1><br/><h2>GoTime: "+meta["GOTIME"]+"</h2><br/>").openPopup().closePopup();
+				.bindPopup("<h1>"+meta["LOCATION"]+"</h1><br/><h2>GoTime: <a href=\"http://eservices.halifax.ca/GoTime/departures_small.jsf?goTime="+meta["GOTIME"]+"\">480-"+meta["GOTIME"]+"</a></h2><br/>").openPopup().closePopup();
 			markers[node._id] = { 'node': node, 'marker': marker };
 			break;
 		}
