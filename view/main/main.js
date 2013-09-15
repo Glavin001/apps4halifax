@@ -1,7 +1,7 @@
 usersPosition = [44.64844, -63.57582];
 
 console.log(usersPosition);
-var map = L.map('map').setView(usersPosition, 8);
+var map = L.map('map').setView(usersPosition, 15);
 
 L.tileLayer('http://a.tiles.mapbox.com/v3/oogalaboogala.map-eh6b4ikh/{z}/{x}/{y}.png', {
 	maxZoom: 18,
@@ -23,38 +23,12 @@ return $.ajax({
 	type: "GET",
 	url: 'http://140.184.132.237:5000/api/Comments/',
 	data: { 'where': JSON.stringify(query) },
-	dataType: "json",
 	success: function(data) {
 		return callback && callback(data);
 	}
 	});
 };
 
-
-function commentHere(){
-	var comment = { 'username':Clay.player.data.username, 'type': '', 'longitude':usersPosition[0], 'latitude':usersPosition[1], 'message': $("#your-location-panel").find("textarea").val() };
-	$.ajax({
-		type:"POST",
-		url:"http://140.184.132.237:5000/api/Comments/",
-		data: {'comment':JSON.stringify(comment)},
-		success: function(data) {
-			console.log('dsadasdsa');
-			$("#real_comments").append("<h2>"+Clay.player.data.username+": "+$("#your-location-panel").find("textarea").val()+"</br></h2>");
-			$("#your-location-panel").find("textarea").val("");
-		}
-	});
-}
-
-function openPanel(){
-		$("#real_comments").html("Loading Comments");
-		hfx.commentsNear(usersPosition[0], usersPosition[1], 10000, function(data) {
-			$("#real_comments").html("");
-			for (var i = data["_items"].length - 1; i >= 0; i--) {
-				$("#real_comments").append("<h2>"+data["_items"][i]["username"]+": "+data["_items"][i]["message"]+"</br></h2>");
-			};
-			 
-		});
-}
 
 function getLocation()
   {
@@ -112,6 +86,7 @@ var radius = 0.0001;
 var $wikiModal = $(".wiki-modal"), 
 $wikiModalTitle = $(".modal-title", $wikiModal), 
 $wikiModalBody = $('.modal-body', $wikiModal);
+$wikiModalFooter = $('.modal-footer', $wikiModal);
 
 $(".leaflet-popup-pane").delegate(".leaflet-popup", "click", function( event ) {
   console.log( event );
@@ -119,46 +94,68 @@ $(".leaflet-popup-pane").delegate(".leaflet-popup", "click", function( event ) {
   if ( $target.hasClass('more-info-btn') ) {
   	console.log($parent);
   	//$parent.closeOn(map);
-  	var $header = $("<p>Info Near Here</p>");
-  	var $body = $("<div>Test</div>");
-  	renderWiki($header, $body);
+  	var lng = $target.attr('data-lng'), lat = $target.attr('data-lat'), radius= $target.attr('data-radius');
+  	var $header = $("<p>Info Around Location <small>("+lng+", "+lat+")</small></p>");
+  	var $body = $("<div class=\"info-box\">Loading data from Gocrata.</div>");
+  	renderWiki($header, $body)
 	popup.closePopup();
 	$wikiModal.modal('show');
+	hfx.geoNear(parseFloat(lat), parseFloat(lng), radius, function(data) { 
+		var items = data["_items"];
+		$body = $("<div style=\"max-height: 500px;overflow-y: scroll;\"/>");
+		for (var i = items.length - 1; i >= 0; i--) {
+			console.log(items[i]);
+			var $table = $(metaJsonToTable(items[i].meta));
+			console.log($table.html());
+			var $row = $("<div/>").append( $("<h3/>").html(items[i].type) ).append( $table );
+			$body.append( $("<div/>").append($row) );
+		}
+		console.log($body);
+		renderWiki($header, $body);	
+	});
   }
   else if ( $target.hasClass('gotime-info-btn') ) {
   	console.log($parent);
   	var gotime = $target.attr("data-gotime");
   	//$parent.closeOn(map);
   	console.log(gotime);
-  	
+  	var $header = $("<p>GoTime for Stop #"+gotime+"</p>");
+  	var $body = $("<iframe width=100% height=100% src=\"http://eservices.halifax.ca/GoTime/departures_small.jsf?goTime="+gotime+"\"></iframe>");
+  	renderWiki($header, $body)
 	popup.closePopup();
 	$wikiModal.modal('show');
-  	
-  	$.ajax({
-		type:"GET",
-		url:"http://140.184.132.237:5000/gotime/"+gotime,
-		success: function(data) {
-			console.log(data);
-  	var $header = $("<p>GoTime for Stop #"+gotime+"</p>");
-  	var $body = $(data);
-  	
-  	renderWiki($header, $body)
-			
-		}
-	});
-   }
+  }
 });
 
-function renderWiki($header, $body) {
-	$wikiModalTitle.html('').append($header);
-	$wikiModalBody.html('').append($body);
+function renderWiki($header, $body, $footer) {
+	if ($header) {
+		$wikiModalTitle.html('').append($header);
+	}
+	if ($body) {
+		$wikiModalBody.html('').append($body);
+	}
+	if ($footer) {
+		$wikiModalFooter.html('').append($footer);
+	}
 }
-function changeClass (elementID, newClass) {
-	var element = document.getElementById(elementID);
-	
-	element.setAttribute("class", newClass); //For Most Browsers
-	element.setAttribute("className", newClass); //For IE; harmless to other browsers.
+
+function metaJsonToTable(json) {
+	console.log('metaJsonToTable', json);
+	var table_obj = $('<table/>');
+	for (var property in json) {
+    	if (json.hasOwnProperty(property)) {
+        	// do stuff
+        	 var table_row = $('<tr/>', {class: property});
+	         var table_cell = $('<td/>', {html: (property + ":" + json[property]) });
+	         table_row.append(table_cell);
+	         table_obj.append(table_row);      
+	         console.log(property, table_row.html());  	
+    	}
+	}
+	console.log(table_obj.html());
+	return table_obj;
 }
+
 function onMapClick(e) {
 	
 	console.log('Mapclick', e.latlng);
@@ -194,10 +191,10 @@ function onMapClick(e) {
 			*/
 			console.log(radius);
 		} else {
-			radius = 0.01;
-			popupContents = "We have data!"; // JSON.stringify(data._items);
-			console.log('We have data!', data._items);
-
+			//popupContents = data._items[0] && metaJsonToTable(data._items[0]);
+			//console.log('We have data!', data._items);
+			//console.log(popupContents);
+			//renderWiki($('Title'),$(popupContents));
 			var allTypes = { };
 			for (var i =0, len=data._items.length; i<len; i++) {
 				var node = data._items[i];
@@ -209,8 +206,9 @@ function onMapClick(e) {
 			popupContents = "<div class=\"popop-contents\">";
 //			popupContents += "<strong>We have collected more than "+Object.keys(allTypes).length+" types of data.</strong><br>";
 			popupContents += "<strong>We have collected "+data._items.length+" result"+(data._items.length>1?"s":"")+".</strong><br>";
-			popupContents += '<button class="btn btn-primary more-info-btn">Click here for more info!</a>'
+			popupContents += '<button class="btn btn-primary more-info-btn" data-lng="'+lng+'" data-lat="'+lat+'" data-radius="'+radius+'">Click here for more info!</a>'
 			popupContents += "</div>";
+			radius = 0.01;
 		}
 		var html = '<div class="popup-contents">'+popupContents+'</div>';
 		/*
