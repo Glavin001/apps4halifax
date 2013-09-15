@@ -1,14 +1,33 @@
 usersPosition = [44.64844, -63.57582];
 
 console.log(usersPosition);
-var map = L.map('map').setView(usersPosition, 13);
+var map = L.map('map').setView(usersPosition, 8);
 
 L.tileLayer('http://a.tiles.mapbox.com/v3/oogalaboogala.map-eh6b4ikh/{z}/{x}/{y}.png', {
 	maxZoom: 18,
-	zoom: 13,
 	attribution: ''
 }).addTo(map);
 new OSMBuildings(map).loadData(); // OSM Buildings
+
+
+hfx.commentsNear = function(lat, lon, side, callback, options) {
+	return hfx.commentsWithin(lat-side/2, lon-side/2, lat+side/2, lon+side/2, callback, options);
+}
+
+hfx.commentsWithin = function(minLat, minLon, maxLat, maxLon, callback, options) {
+var query = options || { };
+query['latitude'] = { $gte : minLat, $lte : maxLat } ;
+query['longitude'] =  { $gte : minLon, $lte : maxLon } ;
+
+return $.ajax({
+	type: "GET",
+	url: 'http://140.184.132.237:5000/api/Comments/',
+	data: { 'where': JSON.stringify(query) },
+	success: function(data) {
+		return callback && callback(data);
+	}
+	});
+};
 
 
 function getLocation()
