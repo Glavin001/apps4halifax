@@ -1,15 +1,60 @@
 usersPosition = [44.64844, -63.57582];
 
 console.log(usersPosition);
-var map = L.map('map').setView(usersPosition, 13);
+var map = L.map('map').setView(usersPosition, 8);
 
 L.tileLayer('http://a.tiles.mapbox.com/v3/oogalaboogala.map-eh6b4ikh/{z}/{x}/{y}.png', {
 	maxZoom: 18,
-	zoom: 13,
 	attribution: ''
 }).addTo(map);
 new OSMBuildings(map).loadData(); // OSM Buildings
 
+
+hfx.commentsNear = function(lat, lon, side, callback, options) {
+	return hfx.commentsWithin(lat-side/2, lon-side/2, lat+side/2, lon+side/2, callback, options);
+}
+
+hfx.commentsWithin = function(minLat, minLon, maxLat, maxLon, callback, options) {
+var query = options || { };
+query['latitude'] = { $gte : minLat, $lte : maxLat } ;
+query['longitude'] =  { $gte : minLon, $lte : maxLon } ;
+
+return $.ajax({
+	type: "GET",
+	url: 'http://140.184.132.237:5000/api/Comments/',
+	data: { 'where': JSON.stringify(query) },
+	dataType: "json",
+	success: function(data) {
+		return callback && callback(data);
+	}
+	});
+};
+
+
+function commentHere(){
+	var comment = { 'username':Clay.player.data.username, 'type': '', 'longitude':usersPosition[0], 'latitude':usersPosition[1], 'message': $("#your-location-panel").find("textarea").val() };
+	$.ajax({
+		type:"POST",
+		url:"http://140.184.132.237:5000/api/Comments/",
+		data: {'comment':JSON.stringify(comment)},
+		success: function(data) {
+			console.log('dsadasdsa');
+			$("#real_comments").append("<h2>"+Clay.player.data.username+": "+$("#your-location-panel").find("textarea").val()+"</br></h2>");
+			$("#your-location-panel").find("textarea").val("");
+		}
+	});
+}
+
+function openPanel(){
+		$("#real_comments").html("Loading Comments");
+		hfx.commentsNear(usersPosition[0], usersPosition[1], 10000, function(data) {
+			$("#real_comments").html("");
+			for (var i = data["_items"].length - 1; i >= 0; i--) {
+				$("#real_comments").append("<h2>"+data["_items"][i]["username"]+": "+data["_items"][i]["message"]+"</br></h2>");
+			};
+			 
+		});
+}
 
 function getLocation()
   {

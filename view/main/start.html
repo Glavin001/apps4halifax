@@ -42,6 +42,15 @@
 		}, requireClay );
 	});
 
+	$(document).ready(function() {
+		$("#clickComment").click(function (e) {
+		    e.stopImmediatePropagation();
+		    e.preventDefault();
+		    alert('dsadsa');
+		    commentHere();
+		});
+	});
+
 	</script>
 
 
@@ -59,6 +68,7 @@
 
  	<div data-role="panel" data-display="overlay" id="your-location-panel" data-theme="b">
 
+ 		<h2>Recent comments in your location.</h2>
 		<div class="ratepanel" style="display:none">
  			<div data-role="fieldcontain">
 				<label for="slider">Service</label><br/>
@@ -76,13 +86,12 @@
 			</div>
  			<br/> 
  		</div>
-
-		<div class="comment_box" style="height:390px;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
+		<div class="comment_box" id="real_comments" style="height:180px;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
 		
 		</div>
 		<div class="current_comment">
         <textarea></textarea> 
- 		<button>Comment</button>
+ 		<button onclick="commentHere()">Comment</button>
  		<button data-theme="a">Snap Picture</button>
  		<button data-theme="a" onclick="pressRate(this)">Rate This</button>
  		</div>
@@ -91,12 +100,9 @@
 
  	<div data-role="panel" data-display="overlay" id="trending-panel" data-theme="b">
 		<div class="comment_box" style="height:500px;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
-		Said: new
+		Nothing is trending today..
 		</div>
-		<div class="current_comment">
-        <textarea></textarea> 
- 		<button>Comment</button>
- 		<button data-theme="a">Snap Picture</button>
+		<div class="current_comment"> >
  		</div>
 <!--         <a href="#" data-rel="close" data-role="button" data-mini="true" data-inline="true" data-icon="delete" data-iconpos="right">Close</a> -->
     </div><!-- /panel -->
@@ -105,11 +111,11 @@
  		<h1>Friend Activity</h1>
 
 		<div class="comment_box" style="height:500px;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
-		things
+		You have no friends.
 		</div>
 		<div class="current_comment">
-        <textarea></textarea> 
- 		<button>Comment</button>
+        <textarea id="comment_data"></textarea> 
+ 		<button onclick="clickComment()" >Comment</button>
  		<button data-theme="a">Snap Picture</button>
  		</div>
 <!--         <a href="#" data-rel="close" data-role="button" data-mini="true" data-inline="true" data-icon="delete" data-iconpos="right">Close</a> -->
@@ -121,7 +127,7 @@
 
  	<div data-role="panel" data-display="overlay" id="nearby-panel" data-theme="b">
 		<br/>
-		<h1>Deals</h1>
+		<h1>Alerts</h1>
 		<div class="comment_box" style="height:500px;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
 			<div>
 				<h2>1 dollar off Sandwhich</h2>
@@ -129,6 +135,11 @@
 				<button>Claim (Expires in 10 minutes)</button>
 			</div>  
 			<hr/>
+			<div>
+				<h2>Pink Carnival</h2>
+				<p>Halifax HRM</p>
+				<button>More information</button>
+			</div> 
 		</div>
 <!--         <a href="#" data-rel="close" data-role="button" data-mini="true" data-inline="true" data-icon="delete" data-iconpos="right">Close</a> -->
     </div><!-- /panel -->
@@ -136,7 +147,7 @@
 	<div data-role="header" data-id="foo1" data-position="fixed">
 		<div data-role="navbar">
 			<ul>
-				<li><a href="#your-location-panel" data-shadow="false" data-iconshadow="false" class="ui-icon-nodisc">Your Location</a></li>
+				<li><a href="#your-location-panel" onclick="openPanel()" data-shadow="false" data-iconshadow="false" class="ui-icon-nodisc">Happening Near you</a></li>
 				<li><a href="#trending-panel" data-shadow="false" data-iconshadow="false" class="ui-icon-nodisc">Trending</a></li>
 				<li><a href="#friends-panel" data-shadow="false" data-iconshadow="false" class="ui-icon-nodisc">Friends</a></li>
 				<li><a href="#nearby-panel" data-shadow="false" data-iconshadow="false" class="ui-icon-nodisc">Alerts</a></li>
