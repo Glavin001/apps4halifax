@@ -23,7 +23,7 @@
 var whereQuery = {'type': { $nin: [ 'crime' ] }};
 $.ajax({
 	type:"GET",
-	url:"http://140.184.132.237:5000/Halifax/",
+	url:"http://140.184.132.237:5000/api/Halifax/",
 	data: {'where':JSON.stringify(whereQuery)},
 	success: function(data) {
 		console.log(data);
@@ -35,6 +35,29 @@ $.ajax({
 hfx.geoNear(44.6459460142, -63.5739672999, 0.00001, function(data) { console.log(data); }, {'type': { $ne : 'building_symbols' } });
 </pre>
 
+
+<h2>Comments</h2>
+<h3>GETting comments</h3>
+$.ajax({
+	type:"GET",
+	url:"http://140.184.132.237:5000/api/Comments/",
+	success: function(data) {
+		console.log(data);
+		var comments = data._items;
+	}
+});
+<h3>POSTing comments</h3>
+<pre class="prettyprint">
+var comment = { 'username':'Glavin', 'type': '', 'longitude':44.6459460142, 'latitude':-63.5739672999, 'message':'Hi Mat!' };
+$.ajax({
+	type:"POST",
+	url:"http://140.184.132.237:5000/api/Comments/",
+	data: {'comment':JSON.stringify(comment)},
+	success: function(data) {
+		console.log(data);
+	}
+});
+</pre>
 
 <div class="section" id="comparison-query-operators">
 <span id="query-selectors-comparison"></span><h1>Comparison Query Operators<a class="headerlink" href="#comparison-query-operators" title="Permalink to this headline"></a></h1>
