@@ -24,6 +24,26 @@ function getLocation()
   }
 
 
+if ( navigator.geolocation ) {
+	function success(pos) {
+		// Location found, show map with these coordinates
+		console.log([pos.coords.latitude, pos.coords.longitude]);
+	}
+	
+	function pressRate(element){
+		$(".ratepanel").show();
+		$(".current_comment").hide();
+	}
+
+	function fail(error) {
+		
+	}
+	
+	// Find the users current position.  Cache the location for 5 minutes, timeout after 6 seconds
+	navigator.geolocation.getCurrentPosition(success, fail, {maximumAge: 500000, enableHighAccuracy:true, timeout: 6000});
+}
+
+
 /*
 L.marker(usersPosition).addTo(map)
 	.bindPopup("Recent Updates<br/>More..").openPopup();
@@ -35,21 +55,64 @@ L.circle(usersPosition, 200, {
 }).addTo(map).bindPopup("I am a circle.");
 */
 var markers = { };
-var popup = L.popup();
+var poiMarker = L.marker(map.getCenter(), { icon: L.icon({
+			    iconUrl: 'images/svg/marker-24.svg',
+			    popupAnchor: [10, 10],
+			}) 
+}).addTo(map);
+var popup = poiMarker.bindPopup("").openPopup().closePopup(); /// L.popup();
 var popupContents = "";
 var radius = 0.001;
+var $wikiModal = $(".wiki-modal"), 
+$wikiModalTitle = $(".modal-title", $wikiModal), 
+$wikiModalBody = $('.modal-body', $wikiModal);
+
+$(".leaflet-popup-pane").delegate(".leaflet-popup", "click", function( event ) {
+  console.log( event );
+  var $target = $(event.target), $parent = $target.parent('.leaflet-popup');
+  if ( $target.hasClass('more-info-btn') ) {
+  	console.log($parent);
+  	//$parent.closeOn(map);
+	popup.closePopup();
+	$wikiModal.modal('show');
+  }
+});
+
+function renderWiki($header, $body) {
+	$wikiModalTitle.html('').append($header);
+	$wikiModalBody.html('').append($body);
+}
 
 function onMapClick(e) {
 	
 	console.log('Mapclick', e.latlng);
-	var lat = e.latlng.lat, lng = e.latlng.lng
+	var lat = e.latlng.lat, lng = e.latlng.lng;
+	popupContents = "Loading data";
+	poiMarker.setLatLng(e.latlng);
+	popup.setPopupContent("Loading data",null).openPopup();
+	/*
+		.setLatLng(e.latlng)
+		.setContent(popupContents)
+		.openPopup();
+	*/
 	hfx.geoNear(lat, lng, radius, function(data) { 
+		var items = data["_items"];
+		for (var i = items.length - 1; i >= 0; i--) {
+			renderNode(items[i]);
+		}
 
 		if (data._items.length <= 0) {
 			popupContents = "Loading data";
 			console.log('Loading data', data); 
 			radius *= 2.0;
 			onMapClick(e); // Retry
+			/*
+			popup
+				.setLatLng(e.latlng)
+				.setContent(popupContents)
+				.openOn(map);
+			*/
+			console.log(radius);
 		} else {
 			radius = 0.01;
 			popupContents = "We have data!"; // JSON.stringify(data._items);
@@ -63,15 +126,20 @@ function onMapClick(e) {
 				} 
 				allTypes[node.type].push(node);
 			}
-			popupContents = "We have more than "+allTypes.length+" data";
-			popupContents += '<a href="">Click here for more info!</a>'
-
+			popupContents = "<div class=\"popop-contents\">";
+//			popupContents += "<strong>We have collected more than "+Object.keys(allTypes).length+" types of data.</strong><br>";
+			popupContents += "<strong>We have collected "+data._items.length+" result"+(data._items.length>1?"s":"")+".</strong><br>";
+			popupContents += '<button class="btn btn-primary more-info-btn">Click here for more info!</a>'
+			popupContents += "</div>";
 		}
 		var html = '<div class="popup-contents">'+popupContents+'</div>';
+		/*
 		popup
 			.setLatLng(e.latlng)
 			.setContent(html)
-			.openOn(map);
+			.openPopup();
+		*/
+		popup.setPopupContent(html);
 
 	});
 
@@ -105,68 +173,106 @@ function renderNode(node) {
 			    iconUrl: 'images/svg/bus-24.svg',
 			});
 			var marker = L.marker(item_position, {icon: myIcon, riseOnHover: true }).addTo(map)
-				.bindPopup("<h1>"+meta["LOCATION"]+"</h1><br/><h2>GoTime: "+meta["GOTIME"]+"</h2><br/>");//.openPopup();
+				.bindPopup("<h1>"+meta["LOCATION"]+"</h1><br/><h2>GoTime: "+meta["GOTIME"]+"</h2><br/>").openPopup().closePopup();
 			markers[node._id] = { 'node': node, 'marker': marker };
+			break;
+		}
+		case 'bus_routes': {
+			var myIcon = L.icon({
+			    iconUrl: 'images/svg/bus-24.svg',
+			});
+			console.log(node);
+			var marker = L.marker(item_position, {icon: myIcon}).addTo(map)
+				.bindPopup("<b>"+JSON.stringify(meta)+"</b><br/><br/>").openPopup().closePopup();
+			var lats = [];
+			for (var j = node["loc"]["coordinates"].length - 1; j >= 0; j--) {
+				lats.push(new L.LatLng(node["loc"]["coordinates"][j][0], node["loc"]["coordinates"][j][1]));
+			};
+			var polyline = L.polyline(lats, {color: 'brown',weight: 3, opacity: 1, smoothFactor: 1}).addTo(map);
+			markers[node._id] = { 'node': node, 'marker': marker };			
 			break;
 		}
 		case 'zoning_boundaries': {
 			var myIcon = L.icon({
 			    iconUrl: 'images/trail.png',
 			});
-			L.marker(item_position, {icon: myIcon}).addTo(map)
-				.bindPopup("<b>"+meta["LOCATION"]+"</b><br/><br/>").openPopup();
+			var marker = L.marker(item_position, {icon: myIcon}).addTo(map)
+				.bindPopup("<b>"+JSON.stringify(meta)+"</b><br/><br/>").openPopup().closePopup();
 			var lats = [];
 			for (var j = node["loc"]["coordinates"].length - 1; j >= 0; j--) {
 				lats.push(new L.LatLng(node["loc"]["coordinates"][j][0], node["loc"]["coordinates"][j][1]));
 			};
 			var polyline = L.polyline(lats, {color: 'red',weight: 3, opacity: 1, smoothFactor: 1}).addTo(map);
-			markers[node._id] = { 'node': node, 'marker': polyline };			
+			markers[node._id] = { 'node': node, 'marker': marker };			
+			break;
+		}
+		case 'bylaw_areas': {
+			var myIcon = L.icon({
+			    iconUrl: 'images/trail.png',
+			});
+			var marker = L.marker(item_position, {icon: myIcon}).addTo(map)
+				.bindPopup("<b>"+JSON.stringify(meta)+"</b><br/><br/>").openPopup().closePopup();
+			var lats = [];
+			for (var j = node["loc"]["coordinates"].length - 1; j >= 0; j--) {
+				lats.push(new L.LatLng(node["loc"]["coordinates"][j][0], node["loc"]["coordinates"][j][1]));
+			};
+			var polyline = L.polyline(lats, {color: 'red',weight: 3, opacity: 1, smoothFactor: 1}).addTo(map);
+			markers[node._id] = { 'node': node, 'marker': marker };			
 			break;
 		}
 		case 'park_recreation_features': {
 			var myIcon = L.icon({
 			    iconUrl: 'images/trail.png',
 			});
-			L.marker(item_position, {icon: myIcon}).addTo(map)
-				.bindPopup("<b>"+meta["LOCATION"]+"</b><br/><br/>").openPopup();
+			var marker = L.marker(item_position, {icon: myIcon}).addTo(map)
+				.bindPopup("<b>"+JSON.stringify(meta)+"</b><br/><br/>").openPopup().closePopup();
 			var lats = [];
 			for (var j = node["loc"]["coordinates"].length - 1; j >= 0; j--) {
 				lats.push(new L.LatLng(node["loc"]["coordinates"][j][0], node["loc"]["coordinates"][j][1]));
 			};
 			var polyline = L.polyline(lats, {color: 'red',weight: 3, opacity: 1, smoothFactor: 1}).addTo(map);
-			markers[node._id] = { 'node': node, 'marker': polyline };			
+			markers[node._id] = { 'node': node, 'marker': marker };			
 			break;
 		}
 		case 'waste_collection': {
 			var myIcon = L.icon({
 			    iconUrl: 'images/trail.png',
 			});
-			L.marker(item_position, {icon: myIcon}).addTo(map)
-				.bindPopup("<b>"+meta["LOCATION"]+"</b><br/><br/>").openPopup();
+			var marker = L.marker(item_position, {icon: myIcon}).addTo(map)
+				.bindPopup("<b>"+JSON.stringify(meta)+"</b><br/><br/>").openPopup().closePopup();
 			var lats = [];
 			for (var j = node["loc"]["coordinates"].length - 1; j >= 0; j--) {
 				lats.push(new L.LatLng(node["loc"]["coordinates"][j][0], node["loc"]["coordinates"][j][1]));
 			};
 			var polyline = L.polyline(lats, {color: 'brown',weight: 3, opacity: 1, smoothFactor: 1}).addTo(map);
-			markers[node._id] = { 'node': node, 'marker': polyline };			
+			markers[node._id] = { 'node': node, 'marker': marker };			
 			break;
 		}
 		case 'trails': {
 			var myIcon = L.icon({
 			    iconUrl: 'images/trail.png',
 			});
-			L.marker(item_position, {icon: myIcon}).addTo(map)
-				.bindPopup("<b>"+meta["LOCATION"]+"</b><br/><br/>").openPopup();
+			var marker = L.marker(item_position, {icon: myIcon}).addTo(map)
+				.bindPopup("<b>"+JSON.stringify(meta)+"</b><br/><br/>").openPopup().closePopup();
 			var lats = [];
 			for (var j = node["loc"]["coordinates"].length - 1; j >= 0; j--) {
 				lats.push(new L.LatLng(node["loc"]["coordinates"][j][0], node["loc"]["coordinates"][j][1]));
 			};
 			var polyline = L.polyline(lats, {color: 'brown',weight: 3, opacity: 1, smoothFactor: 1}).addTo(map);
-			markers[node._id] = { 'node': node, 'marker': polyline };			
+			markers[node._id] = { 'node': node, 'marker': marker };			
+			break;
+		}
+		case 'building_symbols': {
+			var myIcon = L.icon({
+			    iconUrl: 'images/svg/building-24.svg',
+			});
+			var marker = L.marker(item_position, {icon: myIcon, riseOnHover: true }).addTo(map)
+				.bindPopup("<p>"+JSON.stringify(meta)+"</p><br/>").openPopup().closePopup();
+			markers[node._id] = { 'node': node, 'marker': marker };
 			break;
 		}
 		default: {
-			console.warn('Unsupported format', node);
+			console.warn('Unsupported format', node.type, node);
 			break;
 		}
 	}
@@ -246,23 +352,3 @@ $(document).ready(function() {
   		// checkNewThings();
   	});
 });
-
-if ( navigator.geolocation ) {
-	function success(pos) {
-		// Location found, show map with these coordinates
-		console.log([pos.coords.latitude, pos.coords.longitude]);
-	}
-	
-	function pressRate(element){
-		$(".ratepanel").show();
-		$(".current_comment").hide();
-	}
-
-	function fail(error) {
-		
-	}
-	
-	// Find the users current position.  Cache the location for 5 minutes, timeout after 6 seconds
-	navigator.geolocation.getCurrentPosition(success, fail, {maximumAge: 500000, enableHighAccuracy:true, timeout: 6000});
-}
-
