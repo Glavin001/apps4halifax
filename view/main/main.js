@@ -37,7 +37,7 @@ L.circle(usersPosition, 200, {
 var markers = { };
 var popup = L.popup();
 var popupContents = "";
-var radius = 0.01;
+var radius = 0.001;
 
 function onMapClick(e) {
 	
@@ -54,6 +54,18 @@ function onMapClick(e) {
 			radius = 0.01;
 			popupContents = "We have data!"; // JSON.stringify(data._items);
 			console.log('We have data!', data._items);
+
+			var allTypes = { };
+			for (var i =0, len=data._items.length; i<len; i++) {
+				var node = data._items[i];
+				if ( ! allTypes[node.type] ) {
+					 allTypes[node.type] = [ ];
+				} 
+				allTypes[node.type].push(node);
+			}
+			popupContents = "We have more than "+allTypes.length+" data";
+			popupContents += '<a href="">Click here for more info!</a>'
+
 		}
 		var html = '<div class="popup-contents">'+popupContents+'</div>';
 		popup
@@ -69,7 +81,7 @@ function moveMap(){
 	var lat = map.getCenter().lat;
 	var lng = map.getCenter().lng;
 
-	hfx.geoNear(lat, lng, 0.01, function(data) {
+	hfx.geoNear(lat, lng, radius, function(data) {
 		var items = data["_items"];
 		for (var i = items.length - 1; i >= 0; i--) {
 			renderNode(items[i]);
@@ -93,7 +105,7 @@ function renderNode(node) {
 			    iconUrl: 'images/svg/bus-24.svg',
 			});
 			var marker = L.marker(item_position, {icon: myIcon, riseOnHover: true }).addTo(map)
-				.bindPopup("<b>"+meta["LOCATION"]+"</b><br/><br/>").openPopup();
+				.bindPopup("<h1>"+meta["LOCATION"]+"</h1><br/><h2>GoTime: "+meta["GOTIME"]+"</h2><br/>");//.openPopup();
 			markers[node._id] = { 'node': node, 'marker': marker };
 			break;
 		}
@@ -104,8 +116,8 @@ function renderNode(node) {
 			L.marker(item_position, {icon: myIcon}).addTo(map)
 				.bindPopup("<b>"+meta["LOCATION"]+"</b><br/><br/>").openPopup();
 			var lats = [];
-			for (var j = items[i]["loc"]["coordinates"].length - 1; j >= 0; j--) {
-				lats.push(new L.LatLng(items[i]["loc"]["coordinates"][j][0], items[i]["loc"]["coordinates"][j][1]));
+			for (var j = node["loc"]["coordinates"].length - 1; j >= 0; j--) {
+				lats.push(new L.LatLng(node["loc"]["coordinates"][j][0], node["loc"]["coordinates"][j][1]));
 			};
 			var polyline = L.polyline(lats, {color: 'red',weight: 3, opacity: 1, smoothFactor: 1}).addTo(map);
 			markers[node._id] = { 'node': node, 'marker': polyline };			
@@ -118,10 +130,38 @@ function renderNode(node) {
 			L.marker(item_position, {icon: myIcon}).addTo(map)
 				.bindPopup("<b>"+meta["LOCATION"]+"</b><br/><br/>").openPopup();
 			var lats = [];
-			for (var j = items[i]["loc"]["coordinates"].length - 1; j >= 0; j--) {
-				lats.push(new L.LatLng(items[i]["loc"]["coordinates"][j][0], items[i]["loc"]["coordinates"][j][1]));
+			for (var j = node["loc"]["coordinates"].length - 1; j >= 0; j--) {
+				lats.push(new L.LatLng(node["loc"]["coordinates"][j][0], node["loc"]["coordinates"][j][1]));
 			};
 			var polyline = L.polyline(lats, {color: 'red',weight: 3, opacity: 1, smoothFactor: 1}).addTo(map);
+			markers[node._id] = { 'node': node, 'marker': polyline };			
+			break;
+		}
+		case 'waste_collection': {
+			var myIcon = L.icon({
+			    iconUrl: 'images/trail.png',
+			});
+			L.marker(item_position, {icon: myIcon}).addTo(map)
+				.bindPopup("<b>"+meta["LOCATION"]+"</b><br/><br/>").openPopup();
+			var lats = [];
+			for (var j = node["loc"]["coordinates"].length - 1; j >= 0; j--) {
+				lats.push(new L.LatLng(node["loc"]["coordinates"][j][0], node["loc"]["coordinates"][j][1]));
+			};
+			var polyline = L.polyline(lats, {color: 'brown',weight: 3, opacity: 1, smoothFactor: 1}).addTo(map);
+			markers[node._id] = { 'node': node, 'marker': polyline };			
+			break;
+		}
+		case 'trails': {
+			var myIcon = L.icon({
+			    iconUrl: 'images/trail.png',
+			});
+			L.marker(item_position, {icon: myIcon}).addTo(map)
+				.bindPopup("<b>"+meta["LOCATION"]+"</b><br/><br/>").openPopup();
+			var lats = [];
+			for (var j = node["loc"]["coordinates"].length - 1; j >= 0; j--) {
+				lats.push(new L.LatLng(node["loc"]["coordinates"][j][0], node["loc"]["coordinates"][j][1]));
+			};
+			var polyline = L.polyline(lats, {color: 'brown',weight: 3, opacity: 1, smoothFactor: 1}).addTo(map);
 			markers[node._id] = { 'node': node, 'marker': polyline };			
 			break;
 		}
