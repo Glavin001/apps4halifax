@@ -74,6 +74,9 @@ $(".leaflet-popup-pane").delegate(".leaflet-popup", "click", function( event ) {
   if ( $target.hasClass('more-info-btn') ) {
   	console.log($parent);
   	//$parent.closeOn(map);
+  	var $header = $("<p>Info Near Here</p>");
+  	var $body = $("<div>Test</div>");
+  	renderWiki($header, $body)
 	popup.closePopup();
 	$wikiModal.modal('show');
   }
@@ -214,11 +217,8 @@ function renderNode(node) {
 			console.log(node);
 			var marker = L.marker(item_position, {icon: myIcon}).addTo(map)
 				.bindPopup("<b>"+JSON.stringify(meta)+"</b><br/><br/>",{autoPan:false});
-			var lats = [];
-			for (var j = node["loc"]["coordinates"].length - 1; j >= 0; j--) {
-				lats.push(new L.LatLng(node["loc"]["coordinates"][j][0], node["loc"]["coordinates"][j][1]));
-			};
-			var polyline = L.polyline(lats, {color: 'brown',weight: 3, opacity: 1, smoothFactor: 1}).addTo(map);
+			var coordinates = node["loc"]["coordinates"];
+			var polyline = coordinatesToPolyline(coordinates).addTo(map);
 			markers[node._id] = { 'node': node, 'marker': marker };			
 			break;
 		}
@@ -228,11 +228,8 @@ function renderNode(node) {
 			});
 			var marker = L.marker(item_position, {icon: myIcon}).addTo(map)
 				.bindPopup("<b>"+JSON.stringify(meta)+"</b><br/><br/>",{autoPan:false});
-			var lats = [];
-			for (var j = node["loc"]["coordinates"].length - 1; j >= 0; j--) {
-				lats.push(new L.LatLng(node["loc"]["coordinates"][j][0], node["loc"]["coordinates"][j][1]));
-			};
-			var polyline = L.polyline(lats, {color: 'red',weight: 3, opacity: 1, smoothFactor: 1}).addTo(map);
+			var coordinates = node["loc"]["coordinates"];
+			var polyline = coordinatesToPolyline(coordinates).addTo(map);
 			markers[node._id] = { 'node': node, 'marker': marker };			
 			break;
 		}
@@ -242,11 +239,8 @@ function renderNode(node) {
 			});
 			var marker = L.marker(item_position, {icon: myIcon}).addTo(map)
 				.bindPopup("<b>"+JSON.stringify(meta)+"</b><br/><br/>",{autoPan:false});
-			var lats = [];
-			for (var j = node["loc"]["coordinates"].length - 1; j >= 0; j--) {
-				lats.push(new L.LatLng(node["loc"]["coordinates"][j][0], node["loc"]["coordinates"][j][1]));
-			};
-			var polyline = L.polyline(lats, {color: 'red',weight: 3, opacity: 1, smoothFactor: 1}).addTo(map);
+			var coordinates = node["loc"]["coordinates"];
+			var polyline = coordinatesToPolyline(coordinates).addTo(map);
 			markers[node._id] = { 'node': node, 'marker': marker };			
 			break;
 		}
@@ -256,11 +250,8 @@ function renderNode(node) {
 			});
 			var marker = L.marker(item_position, {icon: myIcon}).addTo(map)
 				.bindPopup("<b>"+JSON.stringify(meta)+"</b><br/><br/>",{autoPan:false});
-			var lats = [];
-			for (var j = node["loc"]["coordinates"].length - 1; j >= 0; j--) {
-				lats.push(new L.LatLng(node["loc"]["coordinates"][j][0], node["loc"]["coordinates"][j][1]));
-			};
-			var polyline = L.polyline(lats, {color: 'red',weight: 3, opacity: 1, smoothFactor: 1}).addTo(map);
+			var coordinates = node["loc"]["coordinates"];
+			var polyline = coordinatesToPolyline(coordinates).addTo(map);
 			markers[node._id] = { 'node': node, 'marker': marker };			
 			break;
 		}
@@ -270,11 +261,8 @@ function renderNode(node) {
 			});
 			var marker = L.marker(item_position, {icon: myIcon}).addTo(map)
 				.bindPopup("<b>"+JSON.stringify(meta)+"</b><br/><br/>");
-			var lats = [];
-			for (var j = node["loc"]["coordinates"].length - 1; j >= 0; j--) {
-				lats.push(new L.LatLng(node["loc"]["coordinates"][j][0], node["loc"]["coordinates"][j][1]));
-			};
-			var polyline = L.polyline(lats, {color: 'brown',weight: 3, opacity: 1, smoothFactor: 1}).addTo(map);
+			var coordinates = node["loc"]["coordinates"];
+			var polyline = coordinatesToPolyline(coordinates).addTo(map);
 			markers[node._id] = { 'node': node, 'marker': marker };			
 			break;
 		}
@@ -284,12 +272,9 @@ function renderNode(node) {
 			});
 			var marker = L.marker(item_position, {icon: myIcon}).addTo(map)
 				.bindPopup("<b>"+JSON.stringify(meta)+"</b><br/><br/>",{autoPan:false});
-			var lats = [];
+			
 			var coordinates = node["loc"]["coordinates"];
-			for (var j = coordinates.length - 1; j >= 0; j--) {
-				lats.push(new L.LatLng(coordinates[j][0], coordinates[j][1]));
-			};
-			var polyline = L.polyline(lats, {color: 'brown',weight: 3, opacity: 1, smoothFactor: 1}).addTo(map);
+			var polyline = coordinatesToPolyline(coordinates).addTo(map);
 			markers[node._id] = { 'node': node, 'marker': marker };			
 			break;
 		}
@@ -309,6 +294,15 @@ function renderNode(node) {
 	}
 };
 
+
+function coordinatesToPolyline(coordinates) {
+	var points = [];
+	for (var j = coordinates.length - 1; j >= 0; j--) {
+		points.push(new L.LatLng(coordinates[j][1], coordinates[j][0]));
+	};
+	var polyline = L.polyline(points, {color: 'brown',weight: 3, opacity: 1, smoothFactor: 1});
+	return polyline;
+}
 
 
 /*
