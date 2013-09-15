@@ -85,12 +85,22 @@ $(".leaflet-popup-pane").delegate(".leaflet-popup", "click", function( event ) {
   	var gotime = $target.attr("data-gotime");
   	//$parent.closeOn(map);
   	console.log(gotime);
-  	var $header = $("<p>GoTime for Stop #"+gotime+"</p>");
-  	var $body = $("<iframe width=100% height=100% src=\"http://eservices.halifax.ca/GoTime/departures_small.jsf?goTime="+gotime+"\"></iframe>");
-  	renderWiki($header, $body)
+
 	popup.closePopup();
 	$wikiModal.modal('show');
-  }
+  	
+  	$.ajax({
+		type:"GET",
+		url:"http://140.184.132.237:5000/gotime/"+gotime,
+		success: function(data) {
+			console.log(data);
+  	var $header = $("<p>GoTime for Stop #"+gotime+"</p>");
+  	var $body = $(data);
+  	renderWiki($header, $body)
+			
+		}
+	});
+   }
 });
 
 function renderWiki($header, $body) {
