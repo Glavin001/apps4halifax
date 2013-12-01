@@ -1,4 +1,4 @@
-usersPosition = [44.64844, -63.57582];
+var usersPosition = [44.64844, -63.57582];
 
 console.log(usersPosition);
 var map = L.map('map').setView(usersPosition, 15);
@@ -12,7 +12,7 @@ new OSMBuildings(map).loadData(); // OSM Buildings
 
 hfx.commentsNear = function(lat, lon, side, callback, options) {
 	return hfx.commentsWithin(lat-side/2, lon-side/2, lat+side/2, lon+side/2, callback, options);
-}
+};
 
 hfx.commentsWithin = function(minLat, minLon, maxLat, maxLon, callback, options) {
 var query = options || { };
@@ -29,6 +29,32 @@ return $.ajax({
 	});
 };
 
+
+
+function commentHere(){
+	var comment = { 'username':Clay.player.data.username, 'type': '', 'longitude':usersPosition[0], 'latitude':usersPosition[1], 'message': $("#your-location-panel").find("textarea").val() };
+	$.ajax({
+		type:"POST",
+		url:"http://140.184.132.237:5000/api/Comments/",
+		data: {'comment':JSON.stringify(comment)},
+		success: function(data) {
+			console.log('dsadasdsa');
+			$("#real_comments").append("<h2>"+Clay.player.data.username+": "+$("#your-location-panel").find("textarea").val()+"</br></h2>");
+			$("#your-location-panel").find("textarea").val("");
+		}
+	});
+}
+
+function openPanel(){
+		$("#real_comments").html("Loading Comments");
+		hfx.commentsNear(usersPosition[0], usersPosition[1], 10000, function(data) {
+			$("#real_comments").html("");
+			for (var i = data["_items"].length - 1; i >= 0; i--) {
+				$("#real_comments").append("<h2>"+data["_items"][i]["username"]+": "+data["_items"][i]["message"]+"</br></h2>");
+			};
+			 
+		});
+}
 
 function getLocation()
   {
@@ -120,10 +146,21 @@ $(".leaflet-popup-pane").delegate(".leaflet-popup", "click", function( event ) {
   	//$parent.closeOn(map);
   	console.log(gotime);
   	var $header = $("<p>GoTime for Stop #"+gotime+"</p>");
-  	var $body = $("<iframe width=100% height=100% src=\"http://eservices.halifax.ca/GoTime/departures_small.jsf?goTime="+gotime+"\"></iframe>");
-  	renderWiki($header, $body)
-	popup.closePopup();
+  	popup.closePopup();
 	$wikiModal.modal('show');
+  	
+  	$.ajax({
+		type:"GET",
+		url:"http://140.184.132.237:5000/gotime/"+gotime,
+		success: function(data) {
+			console.log(data);
+            var $header = $("<p>GoTime for Stop #"+gotime+"</p>");
+            var $body = $(data);
+
+            //var $body = $("<iframe width=100% height=100% src=\"http://eservices.halifax.ca/GoTime/departures_small.jsf?goTime="+gotime+"\"></iframe>");
+           renderWiki($header, $body);
+        }
+    });
   }
 });
 
