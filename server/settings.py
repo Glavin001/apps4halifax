@@ -23,11 +23,22 @@ DOMAIN = {
     'Halifax' : {
         
         'schema': {
-            'type': { type: 'string', 'required': True },
-            'longitude': { type: 'float', 'required': True },
-            'latitude': { type: 'float', 'required': True },
-            'meta': { type: 'dict' },
-            'loc': { type: 'dict' }
+        	'_SocrataID': {'type': 'string', 'unique': True, 'required': True },
+            'type': { 'type': 'string', 'required': True },
+            'longitude': { 'type': 'float', 'required': True },
+            'latitude': { 'type': 'float', 'required': True },
+            'meta': { 'type': 'dict' },
+            'loc': { 'type': 'dict' }
+        }
+    },
+
+    'Comments': {
+    	'schema': {
+    		'username': { 'type': 'string', 'required': True },
+            'type': { 'type': 'string', 'required': False },
+            'longitude': { 'type': 'float', 'required': True },
+            'latitude': { 'type': 'float', 'required': True },
+            'message': { 'type': 'string', 'required': True },
         }
     }
 }
@@ -43,3 +54,7 @@ MONGO_PORT = 27017
 MONGO_DBNAME = 'test'
 X_DOMAINS = "*"
 X_HEADERS = "*"
+URL_PREFIX = 'api'
+PAGINATION_LIMIT = 100
+PAGINATION_DEFAULT = 25
+DEBUG = True

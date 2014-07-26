@@ -7,34 +7,66 @@
 
 <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
 
-<script src="../view/dest/hfx.js"></script>
+<script src="../view/dist/hfx.js"></script>
 
 </head>
 <body>
 
 	<div class="container">
 
-<h1>test</h1>
-<p class="lead">this is a test</p>
+<h1>Gocrata API <small>Socrata is only so-so, while Gocrata is good!</small></h1>
+<p class="lead">Below are examples on how to access our Database and RESTful API.</p>
 
 
-<h2>Retrieving Data <small>GET request</small></h2>
+<h2>Geospatial Data (from Socrata)</h2>
+<h3>GETting Geo data</h3>
+<h4>Basic jQuery AJAX</h4>
 <pre class="prettyprint">
 var whereQuery = {'type': { $nin: [ 'crime' ] }};
 $.ajax({
 	type:"GET",
-	url:"http://140.184.132.237:5000/Halifax/",
+	url:"http://140.184.132.237:5000/api/Halifax/",
 	data: {'where':JSON.stringify(whereQuery)},
 	success: function(data) {
 		console.log(data);
 	}
 });
 </pre>
-
+<h4>Data Near Point With Gocrata Hfx.js</h4>
 <pre class="prettyprint">
-hfx.geoNear(44.6459460142, -63.5739672999, 0.00001, function(data) { console.log(data); }, {'type': { $ne : 'building_symbols' } });
+hfx.geoNear(44.6459460142, -63.5739672999, // Latitude, Longitude
+0.00001, // Bounding Box Side Length (creates a rectange around the location point)
+function(data) { 
+	console.log(data); 
+}, {'type': { $ne : 'building_symbols' } // Addition data filtering, in this case where type is not equal to 'building_symbols'. See *Comparison Operators* below for more detail.
+});
 </pre>
 
+
+<h2>Comments</h2>
+<h3>GETting comments</h3>
+<pre class="prettyprint">
+$.ajax({
+	type:"GET",
+	url:"http://140.184.132.237:5000/api/Comments/",
+	success: function(data) {
+		console.log(data);
+		var comments = data._items;
+	}
+});
+</pre>
+<h3>POSTing comments</h3>
+<pre class="prettyprint">
+var comment = { 'username':'Glavin', 'type': '', 'longitude':44.6459460142, 'latitude':-63.5739672999, 'message':'Hi Mat!' };
+$.ajax({
+	type:"POST",
+	url:"http://140.184.132.237:5000/api/Comments/",
+	data: {'comment':JSON.stringify(comment)},
+	success: function(data) {
+		console.log(data);
+	}
+});
+</pre>
 
 <div class="section" id="comparison-query-operators">
 <span id="query-selectors-comparison"></span><h1>Comparison Query Operators<a class="headerlink" href="#comparison-query-operators" title="Permalink to this headline"></a></h1>
@@ -87,6 +119,41 @@ hfx.geoNear(44.6459460142, -63.5739672999, 0.00001, function(data) { console.log
 
 
 <h3>Schema</h3>
+<pre class="prettyprint">
+	DOMAIN = {
+
+    'Halifax' : {
+        
+        'schema': {
+        	'_SocrataID': {'type': 'string', 'unique': True, 'required': True },
+            'type': { 'type': 'string', 'required': True },
+            'longitude': { 'type': 'float', 'required': True },
+            'latitude': { 'type': 'float', 'required': True },
+            'meta': { 'type': 'dict' },
+            'loc': { 'type': 'dict' }
+        }
+    },
+
+    'Comments': {
+    	'schema': {
+    		'username': { 'type': 'string', 'required': True },
+            'type': { 'type': 'string', 'required': False },
+            'longitude': { 'type': 'float', 'required': True },
+            'latitude': { 'type': 'float', 'required': True },
+            'message': { 'type': 'string', 'required': True },
+        }
+    }
+}
+</pre>
+
+<h2>Gotime Proxy</h2>
+<p>
+	Go to <a href="http://140.184.132.237:5000/gotime/9012">http://140.184.132.237:5000/gotime/9012</a> for example.</a>
+	The requests are in the form of:
+	<a href="http://140.184.132.237:5000/gotime/<gotime_number>">http://140.184.132.237:5000/gotime/<gotime_number></a>
+</p>
+
+<h3>Example Return Geo Data</h3>
 <pre class="prettyprint">
 {"_items": [
 0: Object
